@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot Booking | NEXUS E-SPORTS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { 
+            background-color: #02050f; 
+            color: #ffffff; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+        
+        .header { 
+            background: transparent; 
+            padding: 15px 20px; 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #00aaff; 
+            font-family: 'Rajdhani', sans-serif; 
+            width: 100%; 
+            margin-bottom: 20px;
+        }
+        
+        .form-box { 
+            background: #0b1021; 
+            padding: 25px 20px; 
+            border-radius: 15px; 
+            border-top: 4px solid #00ff00; 
+            width: 100%; 
+            max-width: 400px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        
+        .form-box.vip-booking-box {
+            border-top: 4px solid #ffcc00;
+        }
+
+        .form-box h3 { 
+            color: #fff; 
+            text-align: center; 
+            margin-bottom: 5px; 
+            font-size: 20px;
+        }
+        
+        .slot-badge { 
+            display: block; 
+            text-align: center; 
+            background: rgba(0, 102, 255, 0.1); 
+            border: 1px dashed #0066ff; 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin-bottom: 15px; 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: #00d4ff; 
+        }
+
+        .vip-badge {
+            background: rgba(255, 204, 0, 0.1);
+            border-color: #ffcc00;
+            color: #ffcc00;
+        }
+        
+        .balance-box { 
+            display: flex; 
+            justify-content: space-between; 
+            background: #1a2235; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px;
+        }
+        
+        .balance-box p { font-size: 12px; color: #8892b0;}
+        .balance-box h4 { font-size: 18px; color: #fff;}
+        .balance-box .red-text { color: #ff3333; }
+        .balance-box .green-text { color: #00ff00; }
+
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            background: #02050f; 
+            border: 1px solid #1a2235; 
+            color: white; 
+            border-radius: 8px; 
+            outline: none; 
+            font-size: 13px;
+        }
+        input:focus { border-color: #0066ff;}
+        
+        .btn-pay { 
+            width: 100%; 
+            padding: 15px; 
+            background: linear-gradient(90deg, #0033cc, #0088ff); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 15px; 
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.4); 
+            text-transform: uppercase;
+        }
+        .btn-pay:active { transform: scale(0.95); }
+        .btn-pay:disabled { background: #333; color: #777; box-shadow: none; cursor: not-allowed; }
+        
+        .btn-vip-pay {
+            background: linear-gradient(90deg, #ffaa00, #ffcc00);
+            color: #000;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+        }
+
+        .back-btn { 
+            width: 100%; 
+            padding: 12px; 
+            background: transparent; 
+            color: white; 
+            border: 1px solid #ff3333; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            font-weight: bold;
+        }
+
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 200; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0, 0, 0, 0.9); 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+        .modal-content { 
+            background: #151821; 
+            padding: 30px 20px; 
+            border-radius: 15px; 
+            text-align: center; 
+            border-top: 5px solid #00ff00; 
+            width: 100%; 
+            max-width: 350px; 
+        }
+        .modal-content h2 { color: #00ff00; margin-bottom: 10px; font-size: 22px; }
+        .modal-content p { font-size: 14px; color: #ddd; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">🎮 INSTANT BOOKING</div>
+
+    <div class="form-box" id="main-box">
+        <h3>Pay from Wallet</h3>
+        <p style="text-align:center; font-size:12px; color:#8892b0; margin-bottom:20px;">Your slot will be instantly approved!</p>
+        
+        <div class="slot-badge" id="selected-slot">Selected Slot: 🕒 Loading...</div>
+        
+        <div class="balance-box">
+            <div>
+                <p>Entry Fee</p>
+                <h4 class="red-text">৳ <span id="fee-amount">0</span></h4>
+            </div>
+            <div style="text-align: right;">
+                <p>Your Wallet Balance</p>
+                <h4 class="green-text">৳ <span id="user-wallet">0</span></h4>
+            </div>
+        </div>
+
+        <input type="text" id="teamName" placeholder="Your Squad Name" required>
+        <input type="text" id="ign" placeholder="Your In-Game Name (IGN)" required>
+        <input type="number" id="whatsapp" placeholder="WhatsApp Number" required>
+        
+        <button class="btn-pay" id="confirmBtn">PAY & BOOK NOW</button>
+        <button class="back-btn" onclick="window.location.href='home.html'">Cancel</button>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h2>✅ Booking Approved!</h2>
+            <p style="color: white; font-weight: bold; font-size: 15px;">আপনার স্লট সফলভাবে বুকিং হয়েছে। 🎉</p>
+            <p style="color: #00aaff; font-size: 13px;">ম্যাচ শুরুর আগে "My Matches" এ Room ID ও Password দেওয়া হবে।</p>
+            <button class="btn-pay" style="margin-top: 20px;" onclick="window.location.href='home.html'">GO TO HOME</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyDFs_g_3VDGrRs1SHVYrJ2nz-lu5XLMkwA", 
+            authDomain: "nexus-e-sports-24b88.firebaseapp.com", 
+            projectId: "nexus-e-sports-24b88", 
+            storageBucket: "nexus-e-sports-24b88.firebasestorage.app", 
+            messagingSenderId: "731484768866", 
+            appId: "1:731484768866:web:da8b6610217a2c89679f3b" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let currentWalletBal = 0;
+        let slotFee = 0;
+        let dbSlotId = "";
+        let currentBookedCount = 0;
+        let maxSlot = 12;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const slotTime = urlParams.get('time');
+        
+        // 🔥 Identify if it is a VIP match 🔥
+        const isVipMatch = slotTime.includes('VIP');
+        const dbSlotsCollection = isVipMatch ? "VipSlots" : "Slots";
+        const dbBookingsCollection = isVipMatch ? "VipBookings" : "Bookings";
+
+        document.getElementById('selected-slot').innerText = "🕒 " + slotTime + " Slot";
+
+        // Styling for VIP
+        if(isVipMatch) {
+            document.getElementById('main-box').classList.add('vip-booking-box');
+            document.getElementById('selected-slot').classList.add('vip-badge');
+            document.getElementById('confirmBtn').classList.add('btn-vip-pay');
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "index.html"; 
+            } else {
+                currentUser = user;
+                onSnapshot(doc(db, "Users", user.uid), (docSnap) => {
+                    if(docSnap.exists()) {
+                        currentWalletBal = docSnap.data().walletBalance || 0;
+                        document.getElementById('user-wallet').innerText = currentWalletBal;
+                        
+                        if(docSnap.data().team_name) document.getElementById('teamName').value = docSnap.data().team_name;
+                        if(docSnap.data().ff_uid) document.getElementById('ign').value = docSnap.data().ff_uid;
+                        if(docSnap.data().whatsapp) document.getElementById('whatsapp').value = docSnap.data().whatsapp;
+                    }
+                });
+            }
+        });
+
+        // Load Slot Info from Correct Collection
+        if (slotTime) {
+            const q = query(collection(db, dbSlotsCollection), where("time", "==", slotTime));
+            getDocs(q).then((qSnap) => {
+                if (!qSnap.empty) {
+                    let sDoc = qSnap.docs[0];
+                    dbSlotId = sDoc.id;
+                    slotFee = parseInt(sDoc.data().fee);
+                    currentBookedCount = sDoc.data().bookedSlot || 0;
+                    maxSlot = sDoc.data().maxSlot || 12;
+                    document.getElementById('fee-amount').innerText = slotFee;
+                }
+            });
+        }
+
+        document.getElementById('confirmBtn').addEventListener('click', async () => {
+            let teamName = document.getElementById('teamName').value;
+            let ign = document.getElementById('ign').value;
+            let whatsapp = document.getElementById('whatsapp').value;
+
+            if(!teamName || !ign || !whatsapp) return alert("❌ সবগুলো ঘর পূরণ করুন!");
+            if(currentWalletBal < slotFee) return alert("❌ আপনার ওয়ালেটে পর্যাপ্ত টাকা নেই! প্রোফাইল থেকে Add Money করুন।");
+            if(currentBookedCount >= maxSlot) return alert("❌ এই স্লটটি ইতোমধ্যেই ফুল হয়ে গেছে!");
+
+            let btn = document.getElementById('confirmBtn');
+            btn.innerText = "⏳ BOOKING..."; 
+            btn.disabled = true;
+
+            try {
+                // 🔥 DOUBLE SECURITY: Check if already booked in the exact collection 🔥
+                const qCheck = query(collection(db, dbBookingsCollection), where("userEmail", "==", currentUser.email), where("slotTime", "==", slotTime));
+                const existingBookings = await getDocs(qCheck);
+                
+                let alreadyBooked = false;
+                existingBookings.forEach(doc => {
+                    if(doc.data().status === "Pending" || doc.data().status === "Approved") alreadyBooked = true;
+                });
+
+                if(alreadyBooked) {
+                    btn.innerText = "PAY & BOOK NOW"; 
+                    btn.disabled = false;
+                    return alert("❌ আপনি ইতিমধ্যেই এই স্লটটি বুক করেছেন! এক স্লটে ২ বার বুক করা যাবে না।");
+                }
+
+                // 1. Deduct Balance
+                await updateDoc(doc(db, "Users", currentUser.uid), { 
+                    walletBalance: currentWalletBal - slotFee 
+                });
+
+                // 2. Reduce Available Slot
+                let newBookedCount = currentBookedCount + 1;
+                await updateDoc(doc(db, dbSlotsCollection, dbSlotId), { 
+                    bookedSlot: newBookedCount,
+                    status: (newBookedCount >= maxSlot) ? "Full" : "Available"
+                });
+
+                // 3. Save Booking to Correct Collection
+                await addDoc(collection(db, dbBookingsCollection), {
+                    userEmail: currentUser.email,
+                    slotTime: slotTime,
+                    teamName: teamName,
+                    ign: ign,
+                    whatsapp: whatsapp,
+                    paidVia: "Wallet",
+                    status: "Approved", 
+                    timestamp: serverTimestamp()
+                });
+
+                document.getElementById('successModal').style.display = "flex";
+
+            } catch (error) {
+                alert("❌ Booking Failed! " + error.message);
+                btn.innerText = "PAY & BOOK NOW"; 
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

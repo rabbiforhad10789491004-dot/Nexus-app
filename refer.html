@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refer & Earn | NEXUS E-SPORTS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Poppins:wght@300;400;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #02050f; color: #ffffff; padding-bottom: 20px; }
+
+        .header { display: flex; align-items: center; padding: 15px 20px; background: #0b1021; border-bottom: 1px solid #1a2235; position: sticky; top: 0; z-index: 100;}
+        .header i { font-size: 20px; color: #00d4ff; cursor: pointer; margin-right: 15px;}
+        .header h2 { font-family: 'Rajdhani', sans-serif; font-size: 24px; color: #fff; letter-spacing: 1px;}
+
+        .container { padding: 20px; }
+        
+        /* Wallet Box */
+        .wallet-box { background: linear-gradient(135deg, #0033cc, #0066ff); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);}
+        .wallet-box p { font-size: 13px; color: #e6f0ff; margin-bottom: 5px;}
+        .wallet-box h1 { font-size: 36px; font-weight: bold; color: #fff; font-family: 'Rajdhani', sans-serif;}
+        .wallet-box span { font-size: 12px; color: #fff; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 20px; display: inline-block; margin-top: 10px;}
+
+        /* Code Box */
+        .code-box { background: #0b1021; border: 1px dashed #00d4ff; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px;}
+        .code-box p { font-size: 12px; color: #aaa; margin-bottom: 10px;}
+        .code-display { font-size: 24px; font-weight: bold; color: #00ff00; letter-spacing: 5px; margin-bottom: 15px;}
+        .btn-share { background: #00d4ff; color: #000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;}
+        
+        /* Withdraw Section */
+        .withdraw-section { background: #0b1021; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #1a2235;}
+        .withdraw-section h3 { color: #ff4500; font-size: 16px; margin-bottom: 15px;}
+        .withdraw-section input, .withdraw-section select { width: 100%; padding: 12px; margin-bottom: 10px; background: #02050f; border: 1px solid #333; color: white; border-radius: 8px; outline: none; font-size: 13px;}
+        .btn-withdraw { width: 100%; padding: 12px; background: #ff4500; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; margin-top: 5px; transition: 0.3s;}
+        .btn-withdraw:active { transform: scale(0.95); }
+        .btn-withdraw:disabled { background: #333; color: #777; cursor: not-allowed; }
+
+        /* 🔥 New Info Texts 🔥 */
+        .info-text { font-size: 11px; color: #ffaa00; margin-bottom: 5px; text-align: left; font-weight: bold;}
+        .time-text { font-size: 11px; color: #00ff00; margin-bottom: 10px; text-align: center; font-weight: bold; background: rgba(0, 255, 0, 0.1); padding: 8px; border-radius: 5px;}
+
+        /* Rules */
+        .rules-box { background: rgba(255, 69, 0, 0.1); border: 1px solid #ff4500; padding: 15px; border-radius: 10px; font-size: 11px; color: #ccc; line-height: 1.6;}
+        .rules-box h4 { color: #ff4500; margin-bottom: 8px; font-size: 13px;}
+        .rules-box ul { padding-left: 15px; }
+        .rules-box li { margin-bottom: 5px; }
+        .highlight { color: #00ff00; font-weight: bold;}
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="fa-solid fa-arrow-left" onclick="window.location.href='home.html'"></i>
+        <h2>REFER & EARN</h2>
+    </div>
+
+    <div class="container">
+        <!-- Referral Wallet -->
+        <div class="wallet-box">
+            <p>Your Referral Earnings</p>
+            <h1>৳ <span id="ref-balance" style="background:transparent; padding:0;">0</span></h1>
+            <span>Minimum Withdraw: ৳100</span>
+        </div>
+
+        <!-- Referral Code -->
+        <div class="code-box">
+            <p>Share your code with friends</p>
+            <div class="code-display" id="my-ref-code">------</div>
+            <button class="btn-share" onclick="copyCode()"><i class="fa-solid fa-copy"></i> COPY CODE</button>
+        </div>
+
+        <!-- Withdraw Request -->
+        <div class="withdraw-section">
+            <h3>💸 Withdraw Earnings</h3>
+            
+            <select id="wd-method">
+                <option value="bKash">bKash</option>
+                <option value="Nagad">Nagad</option>
+            </select>
+            
+            <!-- 🔥 Custom Messages Added 🔥 -->
+            <p class="info-text">* দয়া করে আপনার সঠিক পার্সোনাল নাম্বারটি দিন:</p>
+            <input type="number" id="wd-number" placeholder="Enter Personal Account Number">
+            
+            <input type="number" id="wd-amount" placeholder="Amount (Minimum 100 Tk)">
+            
+            <p class="time-text">⏳ উইথড্র রিকোয়েস্ট দেওয়ার ২-৬ ঘণ্টার মাঝে টাকা আপনার অ্যাকাউন্টে চলে যাবে।</p>
+            
+            <button class="btn-withdraw" id="wd-btn">SEND WITHDRAW REQUEST</button>
+        </div>
+
+        <!-- Rules -->
+        <div class="rules-box">
+            <h4>📜 Rules & Conditions</h4>
+            <ul>
+                <li>ফেক একাউন্ট বা স্প্যাম করলে কোনো টাকা পাবেন না এবং একাউন্ট ব্যান হবে।</li>
+                <li>আপনার ফ্রেন্ড আপনার কোড দিয়ে একাউন্ট খোলার পর যদি <span class="highlight">টুর্নামেন্টে স্লট বুক করে গেম খেলে</span>, তবেই আপনি নির্দিষ্ট বোনাস পাবেন!</li>
+                <li>রেফার ব্যালেন্স ১০০ টাকা হলে সরাসরি বিকাশ/নগদে নিতে পারবেন।</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFs_g_3VDGrRs1SHVYrJ2nz-lu5XLMkwA",
+            authDomain: "nexus-e-sports-24b88.firebaseapp.com",
+            projectId: "nexus-e-sports-24b88",
+            storageBucket: "nexus-e-sports-24b88.firebasestorage.app",
+            messagingSenderId: "731484768866",
+            appId: "1:731484768866:web:da8b6610217a2c89679f3b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let currentBalance = 0;
+        let myCode = "";
+
+        function generateCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+            return result;
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "login.html"; 
+            } else {
+                currentUser = user;
+                const userRef = doc(db, "Users", user.uid);
+                const userDoc = await getDoc(userRef);
+
+                if(userDoc.exists()) {
+                    let data = userDoc.data();
+                    currentBalance = data.referralBalance || 0;
+                    document.getElementById('ref-balance').innerText = currentBalance;
+
+                    if(data.referralCode) {
+                        myCode = data.referralCode;
+                    } else {
+                        myCode = generateCode();
+                        await updateDoc(userRef, { referralCode: myCode, referralBalance: 0 });
+                    }
+                    document.getElementById('my-ref-code').innerText = myCode;
+                }
+            }
+        });
+
+        window.copyCode = function() {
+            navigator.clipboard.writeText(myCode);
+            alert("✅ Referral Code Copied: " + myCode);
+        }
+
+        document.getElementById('wd-btn').addEventListener('click', async () => {
+            let method = document.getElementById('wd-method').value;
+            let number = document.getElementById('wd-number').value;
+            let amount = parseInt(document.getElementById('wd-amount').value);
+
+            if(!number || !amount) return alert("❌ সবগুলো ঘর সঠিকভাবে পূরণ করুন!");
+            if(number.length < 11) return alert("❌ সঠিক ১১ ডিজিটের মোবাইল নাম্বার দিন!");
+            if(amount < 100) return alert("❌ সর্বনিম্ন ১০০ টাকা উইথড্র করা যাবে!");
+            if(amount > currentBalance) return alert("❌ আপনার রেফারেন্স ব্যালেন্সে পর্যাপ্ত টাকা নেই!");
+
+            let btn = document.getElementById('wd-btn');
+            btn.innerText = "⏳ Processing...";
+            btn.disabled = true;
+
+            try {
+                // ব্যালেন্স কাটা হচ্ছে
+                await updateDoc(doc(db, "Users", currentUser.uid), {
+                    referralBalance: currentBalance - amount
+                });
+
+                // এডমিনের কাছে রিকোয়েস্ট যাচ্ছে
+                await addDoc(collection(db, "ReferralWithdraws"), {
+                    userId: currentUser.uid,
+                    email: currentUser.email,
+                    method: method,
+                    number: number,
+                    amount: amount,
+                    status: "Pending",
+                    timestamp: serverTimestamp()
+                });
+
+                alert("✅ আপনার উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে! ২-৬ ঘণ্টার মাঝে টাকা পেয়ে যাবেন।");
+                window.location.reload(); 
+            } catch (error) {
+                alert("❌ রিকোয়েস্ট ফেইল হয়েছে! আবার চেষ্টা করুন।");
+                btn.innerText = "SEND WITHDRAW REQUEST";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

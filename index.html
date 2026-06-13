@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS E-SPORTS | Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Poppins:wght@300;400;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #02050f; color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden;}
+        
+        .hero-banner { width: 100%; height: 40vh; background: url('https://images.hdqwalls.com/download/garena-free-fire-2021-4k-8j-1000x1000.jpg') top/cover no-repeat; position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 20px;}
+        .hero-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, #02050f 10%, rgba(2,5,15,0.4) 100%);}
+        
+        .logo-box { position: relative; z-index: 10; text-align: center; }
+        .logo-box h1 { font-family: 'Rajdhani', sans-serif; font-size: 55px; color: #e6f0ff; letter-spacing: 2px; line-height: 1; text-shadow: 0 0 20px rgba(0, 102, 255, 0.8);}
+        .logo-box h1 span { color: #0066ff; }
+        .logo-box p { font-size: 11px; color: #8892b0; letter-spacing: 1px; margin-top: 5px; font-weight:bold;}
+
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 20px 30px; z-index: 10;}
+        .form-container { width: 100%; max-width: 400px; padding: 20px; background: rgba(11, 16, 33, 0.6); border: 1px solid #1a2235; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); text-align: center; margin-top: -30px;}
+        
+        .form-title { color: #00aaff; font-size: 20px; margin-bottom: 20px; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px;}
+
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #5a6b8c; font-size: 16px; }
+        .input-group input { width: 100%; padding: 15px 15px 15px 45px; background: #0b1021; border: 1px solid #1a2235; color: white; border-radius: 10px; font-size: 13px; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: #0066ff; box-shadow: 0 0 10px rgba(0, 102, 255, 0.2); }
+        
+        #ref-code-input { text-transform: uppercase; border: 1px dashed #00d4ff; background: rgba(0, 212, 255, 0.05); color: #00ff00; font-weight: bold; letter-spacing: 2px;}
+
+        .btn-blue { width: 100%; padding: 15px; background: linear-gradient(90deg, #0033cc, #0088ff); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 20px rgba(0, 102, 255, 0.4); transition: 0.3s; letter-spacing: 1px;}
+        .btn-blue:active { transform: scale(0.98); }
+
+        .toggle-text { text-align: center; font-size: 12px; color: #8892b0; margin-top: 20px;}
+        .toggle-text span { color: #00aaff; cursor: pointer; font-weight: bold; }
+        #error-msg { color: #ff3333; text-align: center; font-size: 11px; margin-bottom: 15px; display: none; font-weight: bold; background: rgba(255,0,0,0.1); padding: 10px; border-radius: 8px;}
+        #pass-hint { font-size: 9px; color: #8892b0; margin-top: -10px; margin-bottom: 15px; display: none; text-align: left; padding-left: 5px;}
+    </style>
+</head>
+<body>
+
+    <div class="hero-banner">
+        <div class="logo-box">
+            <h1>NE<span>X</span>US</h1>
+            <p>PLAY • COMPETE • WIN</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <h3 class="form-title" id="form-title">LOGIN TO CONTINUE</h3>
+            <p id="error-msg">Please wait...</p>
+
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email Address (@gmail.com)" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" placeholder="Password (Min 8 characters)" required>
+            </div>
+            <p id="pass-hint">* অন্তত ৮ অক্ষর, ১টি বড় হাতের অক্ষর ও ১টি সংখ্যা থাকতে হবে।</p>
+
+            <!-- 🔥 Referral Box (Only for Signup) 🔥 -->
+            <div class="input-group" id="ref-box" style="display: none;">
+                <i class="fa-solid fa-user-tag"></i>
+                <input type="text" id="ref-code-input" placeholder="Referral Code (Optional)">
+            </div>
+
+            <button class="btn-blue" id="submit-btn">LOGIN</button>
+
+            <p class="toggle-text" id="toggle-msg">
+                Don't have an account? <span onclick="toggleForm()">Sign Up</span>
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyDFs_g_3VDGrRs1SHVYrJ2nz-lu5XLMkwA", authDomain: "nexus-e-sports-24b88.firebaseapp.com", projectId: "nexus-e-sports-24b88", storageBucket: "nexus-e-sports-24b88.firebasestorage.app", messagingSenderId: "731484768866", appId: "1:731484768866:web:da8b6610217a2c89679f3b" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let hasChecked = false;
+        
+        // Auto Login Check
+        onAuthStateChanged(auth, async (user) => {
+            if (user && !hasChecked) {
+                hasChecked = true;
+                const userDoc = await getDoc(doc(db, "Users", user.uid));
+                if (userDoc.exists() && userDoc.data().status === "Blocked") {
+                    await auth.signOut();
+                    showError("🚫 আপনার অ্যাকাউন্ট এডমিন দ্বারা ব্লক করা হয়েছে!");
+                } else {
+                    window.location.href = "home.html";
+                }
+            }
+        });
+
+        let isLogin = true;
+
+        window.toggleForm = function() {
+            isLogin = !isLogin;
+            document.getElementById('form-title').innerText = isLogin ? "LOGIN TO CONTINUE" : "CREATE NEW ACCOUNT";
+            document.getElementById('submit-btn').innerText = isLogin ? "LOGIN" : "SIGN UP";
+            document.getElementById('toggle-msg').innerHTML = isLogin ? `Don't have an account? <span onclick="toggleForm()">Sign Up</span>` : `Already have an account? <span onclick="toggleForm()">Login</span>`;
+            document.getElementById('ref-box').style.display = isLogin ? "none" : "block";
+            document.getElementById('pass-hint').style.display = isLogin ? "none" : "block";
+            document.getElementById('error-msg').style.display = "none";
+        }
+
+        // Strong Password Check
+        function isStrongPassword(password) {
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+        }
+
+        document.getElementById('submit-btn').addEventListener('click', async () => {
+            let email = document.getElementById('email').value.trim();
+            let password = document.getElementById('password').value;
+            let refCode = document.getElementById('ref-code-input').value.trim().toUpperCase();
+            let errorMsg = document.getElementById('error-msg');
+            let btn = document.getElementById('submit-btn');
+
+            if(email === "" || password === "") return showError("দয়া করে ইমেইল এবং পাসওয়ার্ড দিন!");
+            if(!email.endsWith("@gmail.com")) return showError("শুধুমাত্র আসল @gmail.com ব্যবহার করতে হবে!");
+
+            btn.innerText = "⏳ PROCESSING..."; btn.disabled = true; errorMsg.style.display = "none";
+
+            if (!isLogin) {
+                // SIGN UP LOGIC
+                if(!isStrongPassword(password)) {
+                    btn.innerText = "SIGN UP"; btn.disabled = false;
+                    return showError("পাসওয়ার্ড অন্তত ৮ অক্ষরের হতে হবে এবং ১টি বড় হাতের অক্ষর ও সংখ্যা থাকতে হবে!");
+                }
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    // ডাটাবেসে সেভ করা
+                    await setDoc(doc(db, "Users", userCredential.user.uid), { 
+                        email: email, 
+                        status: "Active", 
+                        hasPassword: true, 
+                        usedReferralCode: refCode, 
+                        createdAt: serverTimestamp() 
+                    });
+                    window.location.href = "home.html"; 
+                } catch (error) {
+                    btn.innerText = "SIGN UP"; btn.disabled = false;
+                    showError(error.code === 'auth/email-already-in-use' ? "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে!" : "Registration failed.");
+                }
+            } else {
+                // LOGIN LOGIC
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    const userDoc = await getDoc(doc(db, "Users", userCredential.user.uid));
+                    if (userDoc.exists() && userDoc.data().status === "Blocked") {
+                        await auth.signOut();
+                        showError("আপনার অ্যাকাউন্ট এডমিন দ্বারা ব্লক করা হয়েছে!");
+                        btn.innerText = "LOGIN"; btn.disabled = false;
+                        return;
+                    }
+                    window.location.href = "home.html";
+                } catch (error) {
+                    btn.innerText = "LOGIN"; btn.disabled = false;
+                    showError("ইমেইল অথবা পাসওয়ার্ড ভুল হয়েছে!");
+                }
+            }
+        });
+
+        function showError(text) { 
+            let errorMsg = document.getElementById('error-msg');
+            errorMsg.innerText = text; 
+            errorMsg.style.display = "block"; 
+        }
+    </script>
+</body>
+</html>

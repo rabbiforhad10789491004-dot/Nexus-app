@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS E-SPORTS | Premium Home</title>
+    
+    <!-- Google Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Poppins:wght@300;400;600;700&display=swap');
+        
+        /* ========================================= */
+        /* GLOBAL STYLES                             */
+        /* ========================================= */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; 
+        }
+        
+        body { 
+            background-color: #02050f; 
+            color: #ffffff; 
+            padding-bottom: 90px; 
+            overflow-x: hidden; 
+        }
+
+        /* ========================================= */
+        /* FORCE PASSWORD MODAL                      */
+        /* ========================================= */
+        #forcePasswordModal { 
+            display: none; 
+            position: fixed; 
+            z-index: 99999; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100vh; 
+            background-color: rgba(2, 5, 15, 0.95); 
+            backdrop-filter: blur(10px); 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            flex-direction: column; 
+        }
+        
+        .force-content { 
+            background: #0b1021; 
+            padding: 30px 20px; 
+            border-radius: 15px; 
+            border-top: 5px solid #00d4ff; 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center; 
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); 
+        }
+        
+        .force-content h3 { 
+            color: #00d4ff; 
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 26px; 
+            margin-bottom: 10px; 
+        }
+        
+        .force-content p { 
+            color: #8892b0; 
+            font-size: 13px; 
+            margin-bottom: 20px; 
+        }
+        
+        .force-content input { 
+            width: 100%; 
+            padding: 15px; 
+            background: #02050f; 
+            border: 1px solid #1a2235; 
+            color: white; 
+            border-radius: 8px; 
+            outline: none; 
+            font-size: 13px; 
+            text-align: center; 
+            margin-bottom: 15px; 
+        }
+        
+        .force-content input:focus { 
+            border-color: #00d4ff; 
+        }
+        
+        #force-ref-code { 
+            border: 1px dashed #00d4ff; 
+            background: rgba(0, 212, 255, 0.05); 
+            color: #00ff00; 
+            font-weight: bold; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+        }
+        
+        .btn-force { 
+            width: 100%; 
+            padding: 15px; 
+            background: linear-gradient(90deg, #0033cc, #0088ff); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            font-size: 15px; 
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.4); 
+            transition: 0.3s; 
+        }
+        
+        .btn-force:active { 
+            transform: scale(0.95); 
+        }
+        
+        #force-error { 
+            color: #ff3333; 
+            font-size: 12px; 
+            margin-bottom: 15px; 
+            display: none; 
+            font-weight: bold; 
+        }
+
+        /* ========================================= */
+        /* HEADER & NOTIFICATION BELL                */
+        /* ========================================= */
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 20px; 
+            background: transparent; 
+            position: relative; 
+            z-index: 100; 
+            margin-top: 5px; 
+        }
+        
+        .logo-area { 
+            text-align: center; 
+        }
+        
+        .logo-area h2 { 
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 32px; 
+            color: #e6f0ff; 
+            letter-spacing: 2px; 
+            line-height: 1; 
+            text-shadow: 0 0 15px rgba(0, 102, 255, 0.8); 
+        }
+        
+        .logo-area h2 span { 
+            color: #0066ff; 
+        }
+        
+        .logo-area span.sub { 
+            display: block; 
+            font-size: 12px; 
+            color: #0066ff; 
+            letter-spacing: 4px; 
+            font-weight: bold; 
+        }
+        
+        .bell-icon { 
+            position: relative; 
+            cursor: pointer; 
+            color: #00d4ff; 
+            font-size: 22px; 
+            background: #0b1021; 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            border: 1px solid #1a2235; 
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.2); 
+        }
+        
+        .bell-badge { 
+            position: absolute; 
+            top: -2px; 
+            right: -2px; 
+            background: #ff0044; 
+            color: #fff; 
+            font-size: 10px; 
+            font-weight: bold; 
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%; 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            box-shadow: 0 0 10px rgba(255, 0, 68, 0.8); 
+        }
+
+        /* ========================================= */
+        /* SCROLLING NOTICE                          */
+        /* ========================================= */
+        .news-ticker { 
+            background: #0b1021; 
+            color: #00d4ff; 
+            padding: 10px 15px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            display: none; 
+            align-items: center; 
+            border-bottom: 1px solid #1a2235; 
+            border-top: 1px solid #1a2235; 
+        }
+        
+        .news-ticker i { 
+            margin-right: 10px; 
+            font-size: 15px; 
+            color: #ffaa00; 
+        }
+        
+        .news-ticker marquee { 
+            flex: 1; 
+            letter-spacing: 1px; 
+        }
+
+        /* ========================================= */
+        /* MULTIPLE BANNER SLIDER SYSTEM             */
+        /* ========================================= */
+        .slider-container {
+            position: relative;
+            margin: 20px;
+            height: 190px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #1a2235;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a2235;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 5;
+        }
+
+        /* Gradient Overlay ONLY for the first slide */
+        #h-slide-1::after,
+        #v-slide-1::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #02050f 10%, rgba(2, 5, 15, 0.5));
+            pointer-events: none;
+        }
+
+        .banner-text { 
+            position: absolute; 
+            top: 35px; 
+            left: 25px; 
+            z-index: 10; 
+            pointer-events: none; 
+        }
+        
+        .banner-text p { 
+            font-size: 14px; 
+            color: #fff; 
+            font-weight: bold; 
+            letter-spacing: 2px; 
+            margin-bottom: 5px; 
+        }
+        
+        .banner-text h2 { 
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 42px; 
+            color: #00aaff; 
+            line-height: 1; 
+            text-shadow: 0 0 15px #0055ff; 
+        }
+        
+        .banner-btn-style { 
+            margin-top: 20px; 
+            background: linear-gradient(90deg, #0033cc, #0066ff); 
+            color: white; 
+            border: 1px solid #00aaff; 
+            padding: 10px 25px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.6); 
+            pointer-events: auto;
+        }
+
+        /* ========================================= */
+        /* SECTION TITLES & NAVIGATION               */
+        /* ========================================= */
+        .section-title { 
+            padding: 0 20px; 
+            font-size: 15px; 
+            color: #fff; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+        }
+        
+        .section-title i { 
+            color: #0066ff; 
+            margin-right: 10px; 
+            font-size: 18px; 
+        }
+        
+        .nav-section { 
+            display: none; 
+            animation: fadeIn 0.4s ease; 
+        }
+        
+        .nav-section.active { 
+            display: block; 
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* ========================================= */
+        /* TOURNAMENT CARDS (NORMAL)                 */
+        /* ========================================= */
+        .container { 
+            padding: 0 20px; 
+        }
+        
+        .t-card { 
+            background: #0b1021; 
+            border: 1px solid #1a2235; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            display: flex; 
+            gap: 15px; 
+            position: relative; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+        }
+        
+        .t-img-box { 
+            width: 100px; 
+            height: 120px; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            position: relative; 
+            border: 2px solid #1f2937; 
+            background-color: #1a2235; 
+            flex-shrink: 0;
+        }
+        
+        .t-img-box img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        
+        .live-badge { 
+            position: absolute; 
+            top: 0; 
+            right: 0; 
+            background: #ff0044; 
+            color: white; 
+            font-size: 10px; 
+            font-weight: bold; 
+            padding: 4px 8px; 
+            border-bottom-left-radius: 8px; 
+            box-shadow: -2px 2px 10px rgba(255, 0, 68, 0.5); 
+        }
+        
+        .offline-badge { 
+            position: absolute; 
+            top: 0; 
+            right: 0; 
+            background: #5a6b8c; 
+            color: white; 
+            font-size: 10px; 
+            font-weight: bold; 
+            padding: 4px 8px; 
+            border-bottom-left-radius: 8px; 
+        }
+
+        .t-info { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+        
+        .t-top-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+        }
+        
+        .t-title h3 { 
+            font-size: 17px; 
+            color: #00d4ff; 
+            margin-bottom: 4px; 
+            font-family: 'Rajdhani', sans-serif; 
+            letter-spacing: 1px; 
+        }
+        
+        .t-title p { 
+            font-size: 12px; 
+            color: #8892b0; 
+        }
+        
+        .t-slot { 
+            text-align: right; 
+        }
+        
+        .t-slot p { 
+            font-size: 10px; 
+            color: #8892b0; 
+            margin-bottom: -2px; 
+            font-weight: bold; 
+        }
+        
+        .t-slot h4 { 
+            font-size: 18px; 
+            color: #00d4ff; 
+            font-weight: bold; 
+        }
+        
+        .t-divider { 
+            width: 100%; 
+            height: 1px; 
+            background: #1a2235; 
+            margin: 12px 0; 
+        }
+        
+        .t-bottom-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+        }
+        
+        .t-stats { 
+            display: flex; 
+            gap: 20px; 
+        }
+        
+        .t-stats p { 
+            font-size: 10px; 
+            color: #8892b0; 
+            margin-bottom: 2px; 
+            font-weight: bold; 
+        }
+        
+        .t-stats h5 { 
+            font-size: 15px; 
+            color: #fff; 
+        }
+        
+        .btn-join { 
+            background: linear-gradient(90deg, #0033cc, #0088ff); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 10px 18px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.5); 
+            transition: 0.3s; 
+        }
+        
+        .btn-join:active { 
+            transform: scale(0.95); 
+        }
+        
+        .btn-join.full { 
+            background: #1a2235; 
+            color: #5a6b8c; 
+            box-shadow: none; 
+            cursor: not-allowed; 
+            border: 1px solid #2a3342; 
+        }
+
+        /* ========================================= */
+        /* 🔥 FULL SCREEN VIP SECTION 🔥             */
+        /* ========================================= */
+        #vip-section { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0;
+            bottom: 0;
+            width: 100vw; 
+            height: 100vh; 
+            background-color: #06142E; 
+            z-index: 2000; 
+            overflow-y: auto; 
+            overflow-x: hidden;
+            padding-bottom: 90px;
+        }
+
+        .vip-header { 
+            background-color: #0A1F44; 
+            padding: 20px 20px; 
+            display: flex; 
+            align-items: center; 
+            border-bottom: 2px solid #00AFFF; 
+            box-shadow: 0 4px 15px rgba(0, 175, 255, 0.3); 
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .vip-header i { 
+            color: #00AFFF; 
+            font-size: 22px; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+
+        .vip-header i:active { 
+            transform: scale(0.9); 
+        }
+
+        .vip-header h2 { 
+            color: #00AFFF; 
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 24px; 
+            margin-left: 20px; 
+            letter-spacing: 1px; 
+            text-transform: uppercase;
+        }
+
+        /* VIP Card Styles */
+        .vip-card { 
+            background-color: #0A1F44;
+            border: 1px solid #1E90FF; 
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.2); 
+        }
+        
+        .vip-card .t-img-box {
+            border-color: #1E90FF;
+            background-color: #06142E;
+        }
+
+        .vip-card .t-title h3 { 
+            color: #ffcc00; 
+        }
+
+        .vip-card .t-slot h4 { 
+            color: #ffcc00; 
+        }
+        
+        .vip-card .t-divider {
+            background-color: #1E90FF;
+            opacity: 0.5;
+        }
+
+        .vip-badge-card { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            background: #00AFFF; 
+            color: #000000; 
+            font-size: 11px; 
+            font-weight: bold; 
+            padding: 5px 10px; 
+            border-bottom-right-radius: 10px; 
+            z-index: 10; 
+            box-shadow: 2px 2px 10px rgba(0, 175, 255, 0.5);
+        }
+
+        .btn-vip-join { 
+            background: linear-gradient(90deg, #00AFFF, #1E90FF); 
+            color: #000000; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 10px 18px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 0 15px rgba(0, 175, 255, 0.4); 
+            text-transform: uppercase; 
+            transition: 0.3s;
+        }
+
+        .btn-vip-join:active { 
+            transform: scale(0.95); 
+        }
+
+        .btn-vip-join.full { 
+            background: #06142E; 
+            color: #1E90FF; 
+            border: 1px solid #1E90FF; 
+            box-shadow: none; 
+            cursor: not-allowed;
+        }
+
+        /* ========================================= */
+        /* MY MATCHES CARDS                          */
+        /* ========================================= */
+        .my-match-card { 
+            background: #0b1021; 
+            border: 1px solid #00d4ff; 
+            border-radius: 15px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 5px 20px rgba(0, 102, 255, 0.15); 
+        }
+        
+        .my-match-header { 
+            display: flex; 
+            justify-content: space-between; 
+            border-bottom: 1px dashed #1a2235; 
+            padding-bottom: 12px; 
+            margin-bottom: 15px; 
+        }
+        
+        .my-match-header h3 { 
+            color: #ff4500; 
+            font-size: 18px; 
+            font-family: 'Rajdhani', sans-serif; 
+            letter-spacing: 1px; 
+        }
+        
+        .my-match-header span { 
+            background: #00ff00; 
+            color: #000; 
+            padding: 4px 10px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            font-weight: bold; 
+        }
+        
+        .room-box { 
+            background: #02050f; 
+            border: 1px solid #1a2235; 
+            padding: 15px; 
+            border-radius: 10px; 
+            text-align: center; 
+            margin-top: 15px; 
+        }
+        
+        .room-box p { 
+            font-size: 13px; 
+            color: #aaa; 
+            margin-bottom: 12px; 
+        }
+        
+        .room-credentials { 
+            display: flex; 
+            justify-content: space-between; 
+            background: #111; 
+            padding: 12px; 
+            border-radius: 8px; 
+            border: 1px dashed #00d4ff; 
+        }
+        
+        .room-credentials div { flex: 1; }
+        .room-credentials span { display: block; font-size: 11px; color: #8892b0; margin-bottom: 3px; }
+        .room-credentials h4 { font-size: 16px; color: #fff; font-family: 'Courier Prime', monospace; }
+        
+        .btn-result { 
+            width: 100%; 
+            background: linear-gradient(90deg, #ffaa00, #ff6600); 
+            color: #000; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-top: 15px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            box-shadow: 0 5px 15px rgba(255, 170, 0, 0.3); 
+        }
+        
+        .btn-rule { 
+            background: transparent; 
+            border: 1px solid #00d4ff; 
+            padding: 10px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            color: #00d4ff; 
+            flex: 1; 
+            text-align: center; 
+            transition: 0.3s; 
+        }
+        
+        .btn-rule:active { 
+            transform: scale(0.95); 
+            background: rgba(0, 212, 255, 0.1); 
+        }
+
+        /* ========================================= */
+        /* PROFILE LAYOUT                            */
+        /* ========================================= */
+        .profile-header { 
+            background: #0b1021; 
+            padding: 30px 20px; 
+            border-radius: 15px; 
+            text-align: center; 
+            margin: 20px; 
+            border: 1px solid #1a2235; 
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); 
+        }
+        
+        .profile-header img { 
+            width: 100px; 
+            height: 100px; 
+            border-radius: 50%; 
+            border: 3px solid #0066ff; 
+            object-fit: cover; 
+            margin-bottom: 15px; 
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.4); 
+        }
+        
+        .wallet-display { 
+            background: #1a2235; 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin-top: 20px; 
+            border: 1px dashed #00d4ff; 
+        }
+        
+        .wallet-display p { font-size: 12px; color: #8892b0; margin-bottom: 5px; font-weight: bold; }
+        .wallet-display h2 { color: #00ff00; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px; font-size: 32px; }
+        
+        .vip-status-badge { 
+            background: #00AFFF; 
+            color: #000000; 
+            padding: 2px 10px; 
+            border-radius: 20px; 
+            font-size: 10px; 
+            font-weight: bold; 
+            margin-left: 10px; 
+            vertical-align: middle; 
+            display: none;
+            box-shadow: 0 0 10px rgba(0, 175, 255, 0.5);
+        }
+        
+        .profile-menu { margin: 0 20px; }
+        
+        /* 🔥 PREMIUM PROFILE BUTTONS DESIGN 🔥 */
+        .premium-btn {
+            width: 100%;
+            padding: 16px 20px;
+            background: #0b1021;
+            border: 1px solid #1a2235;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .premium-btn:active {
+            transform: scale(0.98);
+        }
+
+        .premium-btn i {
+            font-size: 22px;
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .normal-btn i { 
+            color: #00aaff; 
+        }
+
+        /* VIP Button Premium */
+        .premium-vip-btn {
+            border: 1px solid #00AFFF;
+            box-shadow: 0 0 15px rgba(0, 175, 255, 0.15);
+        }
+        
+        .premium-vip-btn i {
+            color: #00AFFF;
+            text-shadow: 0 0 10px #00AFFF;
+        }
+
+        /* Leaderboard Button Premium */
+        .premium-leaderboard-btn {
+            border: 1px solid #ffaa00;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.15);
+        }
+        
+        .premium-leaderboard-btn i {
+            color: #ffaa00;
+            text-shadow: 0 0 10px #ffaa00;
+        }
+
+        /* ========================================= */
+        /* BOTTOM NAVIGATION                         */
+        /* ========================================= */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: #050814; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 15px 0; 
+            border-top: 1px solid #1a2235; 
+            z-index: 1000; 
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5); 
+        }
+        
+        .nav-item { 
+            text-align: center; 
+            color: #5a6b8c; 
+            cursor: pointer; 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 5px; 
+            transition: 0.3s; 
+        }
+        
+        .nav-item.active { color: #00aaff; }
+        .nav-item i { font-size: 22px; }
+        .nav-item span { font-size: 11px; font-weight: bold; }
+
+        .coming-soon-box { background: #0b1021; padding: 40px 20px; border-radius: 15px; text-align: center; border: 1px dashed #0066ff; margin: 50px 20px; }
+        .coming-soon-box i { font-size: 50px; color: #00aaff; margin-bottom: 20px; }
+        .loading { text-align: center; color: #00aaff; font-weight: bold; margin-top: 50px; font-size: 18px; }
+
+        /* ========================================= */
+        /* MODALS & CHAT                             */
+        /* ========================================= */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 3000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.9); 
+            align-items: center; 
+            justify-content: center; 
+            padding: 15px; 
+            backdrop-filter: blur(5px); 
+        }
+        
+        .modal-content { 
+            background: #0b1021; 
+            padding: 25px; 
+            border-radius: 15px; 
+            border-top: 5px solid #00aaff; 
+            width: 100%; 
+            max-width: 400px; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            border: 1px solid #1a2235; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+        }
+        
+        .modal-content.vip-modal { border-top-color: #ffcc00; }
+        .modal-content h3 { color: #00aaff; margin-bottom: 20px; text-align: center; font-family: 'Rajdhani', sans-serif; font-size: 28px; }
+        
+        .close-btn { 
+            width: 100%; 
+            background: transparent; 
+            color: #ff3333; 
+            border: 1px solid #ff3333; 
+            padding: 12px; 
+            margin-top: 15px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-size: 14px; 
+        }
+        .close-btn:active { background: rgba(255, 51, 51, 0.1); }
+
+        /* Chat Styles */
+        #chat-messages { flex: 1; overflow-y: auto; background: #02050f; border-radius: 10px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; height: 400px; border: 1px solid #1a2235; }
+        .chat-msg-box { display: flex; flex-direction: column; max-width: 85%; margin-bottom: 5px; }
+        .chat-msg-box.me { align-self: flex-end; align-items: flex-end; }
+        .chat-msg-box.other { align-self: flex-start; align-items: flex-start; }
+        .chat-bubble { padding: 12px 16px; border-radius: 15px; font-size: 13px; color: #fff; word-break: break-word; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+        .chat-msg-box.me .chat-bubble { background: linear-gradient(90deg, #0033cc, #0088ff); border-bottom-right-radius: 3px; }
+        .chat-msg-box.other .chat-bubble { background: #1a2235; border-bottom-left-radius: 3px; border: 1px solid #333; }
+        .chat-msg-box.admin .chat-bubble { border: 1px solid #00ff00; background: rgba(0, 255, 0, 0.1); border-bottom-left-radius: 3px; }
+        .chat-sender { font-size: 11px; color: #aaa; margin-bottom: 5px; font-weight: bold; }
+        .chat-sender.admin-badge { color: #00ff00; }
+        .chat-sender.me-badge { color: #00d4ff; }
+        
+        .chat-input-area { display: flex; gap: 8px; }
+        .chat-input-area input { flex: 1; padding: 15px; border-radius: 25px; background: #02050f; border: 1px solid #1a2235; color: white; outline: none; font-size: 14px; }
+        .chat-input-area button { background: linear-gradient(90deg, #00d4ff, #0033cc); color: #fff; border: none; padding: 0 20px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 18px; box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4); }
+        .chat-input-area button.img-btn { background: #1a2235; border: 1px solid #333; box-shadow: none; }
+
+        /* Leaderboard */
+        .rank-row { display: flex; justify-content: space-between; align-items: center; background: #1a2235; padding: 15px; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .rank-1 { border-left: 5px solid #ffcc00; background: rgba(255, 204, 0, 0.1); } 
+        .rank-2 { border-left: 5px solid #c0c0c0; background: rgba(192, 192, 192, 0.1); } 
+        .rank-3 { border-left: 5px solid #cd7f32; background: rgba(205, 127, 50, 0.1); }
+        .rank-name { font-weight: bold; font-size: 15px; color: #fff; }
+        .rank-won { font-weight: bold; color: #00ff00; font-family: 'Rajdhani', sans-serif; font-size: 22px; }
+        .rank-won span { font-size: 11px; color: #aaa; font-family: 'Poppins', sans-serif; display: block; text-align: right; font-weight: normal; }
+
+        /* Profile Form Styling */
+        .profile-pic-container { text-align: center; margin-bottom: 20px; }
+        .profile-pic-container img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #0066ff; object-fit: cover; margin-bottom: 8px; }
+        .profile-form label { display: block; font-size: 12px; color: #8892b0; margin-top: 12px; margin-bottom: 5px; font-weight: bold; text-align: left; }
+        .profile-form input, .profile-form select { width: 100%; padding: 12px; background: #02050f; border: 1px solid #1a2235; color: white; border-radius: 8px; outline: none; font-size: 13px; }
+        .profile-form input:focus, .profile-form select:focus { border-color: #00aaff; box-shadow: 0 0 10px rgba(0, 170, 255, 0.2); }
+
+        .notif-card { background: #1a2235; border-left: 4px solid #00aaff; padding: 15px; border-radius: 10px; margin-bottom: 12px; text-align: left; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
+        .notif-card h4 { font-size: 14px; color: #fff; margin-bottom: 5px; }
+        .notif-card p { font-size: 12px; color: #ccc; line-height: 1.5; }
+        .notif-card.unread { border-left-color: #ff0044; background: rgba(255, 0, 68, 0.1); }
+    </style>
+</head>
+<body>
+
+    <!-- 🔥 1. FORCE PASSWORD MODAL 🔥 -->
+    <div id="forcePasswordModal">
+        <div class="force-content">
+            <h3>🔐 Security Setup</h3>
+            <p>আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে একটি শক্তিশালী পাসওয়ার্ড এবং রেফার কোড (যদি থাকে) দিন। এই পাসওয়ার্ড পরবর্তীতে লগইন করতে লাগবে।</p>
+            <p id="force-error"></p>
+            
+            <input type="password" id="force-new-password" placeholder="Password (Min 8 chars, 1 Uppercase, 1 Number)">
+            <input type="text" id="force-ref-code" placeholder="Referral Code (Optional)">
+            
+            <button class="btn-force" id="saveForcePassBtn">💾 SAVE & CONTINUE</button>
+            <button class="close-btn" style="margin-top:15px; border:none; color:#ff3333; font-size:14px;" id="forceLogoutBtn">🚪 LOGOUT</button>
+        </div>
+    </div>
+
+    <!-- 🔥 HEADER & NOTICE 🔥 -->
+    <div class="header">
+        <div style="width: 40px;"></div>
+        <div class="logo-area"><h2>NE<span>X</span>US</h2><span class="sub">E-SPORTS</span></div>
+        <div class="bell-icon" onclick="openNotifModal()">
+            <i class="fa-solid fa-bell"></i>
+            <span class="bell-badge" id="bell-badge">0</span>
+        </div>
+    </div>
+    
+    <div class="news-ticker" id="news-ticker-box">
+        <i class="fa-solid fa-bullhorn"></i>
+        <marquee id="news-text"></marquee>
+    </div>
+
+    <!-- ================= 1. HOME SECTION ================= -->
+    <div id="home-section" class="nav-section active">
+        
+        <!-- 🔥 3 BANNERS SLIDER (HOME) 🔥 -->
+        <div class="slider-container" id="home-slider">
+            <div class="slide active" id="h-slide-1" onclick="clickBanner('h', 1)">
+                <!-- Only first banner has text & button -->
+                <div class="banner-text">
+                    <p>NEXUS E-SPORTS</p>
+                    <h2>BE THE<br>CHAMPION</h2>
+                    <button class="banner-btn-style">CLICK HERE</button>
+                </div>
+            </div>
+            <div class="slide" id="h-slide-2" onclick="clickBanner('h', 2)"></div>
+            <div class="slide" id="h-slide-3" onclick="clickBanner('h', 3)"></div>
+        </div>
+        
+        <div class="section-title">
+            <div><i class="fa-solid fa-fire"></i> LIVE TOURNAMENTS</div>
+        </div>
+        
+        <div id="slot-container" class="container">
+            <h3 class="loading">⏳ Loading Matches...</h3>
+        </div>
+    </div>
+
+    <!-- ================= 2. MY MATCHES SECTION ================= -->
+    <div id="matches-section" class="nav-section">
+        <div class="section-title" style="margin-top: 15px;">
+            <div><i class="fa-solid fa-gamepad"></i> MY UPCOMING MATCHES</div>
+        </div>
+        <div id="my-matches-container" class="container">
+            <h3 class="loading">⏳ Fetching your matches...</h3>
+        </div>
+    </div>
+
+    <!-- ================= 3. MESSAGES SECTION ================= -->
+    <div id="messages-section" class="nav-section">
+        <div class="coming-soon-box">
+            <i class="fa-solid fa-headset" style="font-size: 60px;"></i>
+            <h2 style="color:white; margin-bottom:10px; font-family:'Rajdhani', sans-serif;">Support Center</h2>
+            <p style="color:#8892b0; font-size:13px; margin-bottom:25px;">যেকোনো সাপোর্টের জন্য সরাসরি হোয়াটসঅ্যাপ এ মেসেজ দিন।</p>
+            <button class="btn-join" onclick="window.location.href='support.html'" style="padding:15px; width:100%; font-size:15px;">
+                <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= 4. PROFILE SECTION ================= -->
+    <div id="profile-section" class="nav-section">
+        <div class="profile-header">
+            <img id="dash-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Avatar">
+            <h3 id="dash-name" style="color:white; font-size: 22px; margin-bottom:5px;">
+                Guest User 
+                <span id="vip-badge" class="vip-status-badge">👑 VIP</span>
+            </h3>
+            <p id="dash-email" style="color:#8892b0; font-size:13px;">Loading email...</p>
+            
+            <div class="wallet-display">
+                <p>Main Wallet Balance</p>
+                <h2>৳ <span id="dash-wallet">0</span></h2>
+            </div>
+        </div>
+        
+        <div class="profile-menu">
+            
+            <!-- 🔥 PREMIUM VIP BUTTON 🔥 -->
+            <button class="premium-btn premium-vip-btn" onclick="openVipMatches()">
+                <i class="fa-solid fa-crown"></i> 
+                <span style="color: #00AFFF; flex:1; text-align:left;">VIP Tournaments</span>
+                <span id="vip-lock-tag" style="font-size:10px; background:rgba(0,175,255,0.2); color:#00AFFF; padding:3px 6px; border-radius:5px; border:1px solid #00AFFF;">LOCKED</span>
+            </button>
+            
+            <!-- 🔥 PREMIUM LEADERBOARD BUTTON 🔥 -->
+            <button class="premium-btn premium-leaderboard-btn" onclick="openLeaderboard()">
+                <i class="fa-solid fa-trophy"></i> 
+                <span style="color: #ffaa00; flex:1; text-align:left;">Top Teams Leaderboard</span>
+            </button>
+
+            <!-- Regular Buttons -->
+            <button class="premium-btn normal-btn" onclick="openEditProfile()">
+                <i class="fa-solid fa-user-pen"></i> <span style="flex:1; text-align:left;">Edit Profile</span>
+            </button>
+            <button class="premium-btn normal-btn" onclick="openWallet()">
+                <i class="fa-solid fa-wallet" style="color:#00ff00;"></i> 
+                <span style="flex:1; text-align:left;">My Wallet</span>
+                <span style="color:#00ff00; font-size:11px; border:1px solid #00ff00; padding:4px 8px; border-radius:5px;">ADD MONEY</span>
+            </button>
+            <button class="premium-btn normal-btn" onclick="window.location.href='refer.html'">
+                <i class="fa-solid fa-users" style="color: #00d4ff;"></i> 
+                <span style="color: #00d4ff; flex:1; text-align:left;">Refer & Earn ৳</span>
+            </button>
+            <button class="premium-btn normal-btn" onclick="openAppRules()">
+                <i class="fa-solid fa-scroll" style="color: #ff4500;"></i> 
+                <span style="flex:1; text-align:left;">App Rules</span>
+            </button>
+            <button class="premium-btn normal-btn" id="logoutBtn" style="border-color:#ff0044; color:#ff0044;">
+                <i class="fa-solid fa-right-from-bracket" style="color:#ff0044;"></i> 
+                <span style="color:#ff0044; flex:1; text-align:left;">Logout Account</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 🔥 FULL SCREEN VIP SECTION 🔥 -->
+    <div id="vip-section" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: #06142E; z-index: 2000; overflow-y: auto; padding-bottom: 90px;">
+        
+        <div class="vip-header" style="background: #0A1F44; padding: 20px; display: flex; align-items: center; border-bottom: 2px solid #00AFFF; box-shadow: 0 4px 15px rgba(0, 175, 255, 0.3); position: sticky; top: 0; z-index: 100;">
+            <i class="fa-solid fa-arrow-left" style="color: #00AFFF; font-size: 22px; cursor: pointer;" onclick="closeVipSection()"></i>
+            <h2 style="color: #00AFFF; font-family: 'Rajdhani', sans-serif; font-size: 24px; margin-left: 20px; letter-spacing: 1px;">VIP TOURNAMENTS</h2>
+        </div>
+        
+        <!-- 🔥 3 BANNERS SLIDER (VIP) 🔥 -->
+        <div class="slider-container" id="vip-slider" style="height: 180px; margin: 15px 20px; border: 2px solid #00AFFF; box-shadow: 0 0 15px rgba(0,175,255,0.4);">
+            <div class="slide active" id="v-slide-1" onclick="clickBanner('v', 1)"></div>
+            <div class="slide" id="v-slide-2" onclick="clickBanner('v', 2)"></div>
+            <div class="slide" id="v-slide-3" onclick="clickBanner('v', 3)"></div>
+        </div>
+
+        <div class="section-title">
+            <div><i class="fa-solid fa-crown" style="color: #ffcc00;"></i> EXCLUSIVE VIP MATCHES</div>
+        </div>
+        
+        <div id="vip-slot-container" class="container">
+            <h3 class="loading" style="color: #ffcc00;">⏳ Loading VIP Matches...</h3>
+        </div>
+    </div>
+
+    <!-- 🔥 BOTTOM NAV 🔥 -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchNav('home-section', this)"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" onclick="switchNav('matches-section', this)"><i class="fa-solid fa-gamepad"></i><span>Matches</span></div>
+        <div class="nav-item" onclick="switchNav('messages-section', this)"><i class="fa-solid fa-comment-dots"></i><span>Messages</span></div>
+        <div class="nav-item" onclick="switchNav('profile-section', this)"><i class="fa-regular fa-user"></i><span>Profile</span></div>
+    </div>
+
+    <!-- ================= ALL MODALS ================= -->
+    
+    <!-- NOTIFICATION MODAL -->
+    <div id="notifModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#00d4ff;"><i class="fa-solid fa-bell"></i> Inbox</h3>
+            <div id="notif-list" style="max-height:400px; overflow-y:auto;"></div>
+            <button class="close-btn" onclick="closeNotifModal()">✖ CLOSE</button>
+        </div>
+    </div>
+
+    <!-- LEADERBOARD MODAL -->
+    <div id="leaderboardModal" class="modal">
+        <div class="modal-content" style="max-height:85vh;">
+            <h3 style="color:#ffaa00; font-size:28px;"><i class="fa-solid fa-crown"></i> TOP TEAMS</h3>
+            <div id="leaderboard-list"></div>
+            <button class="close-btn" onclick="closeLeaderboard()">✖ CLOSE</button>
+        </div>
+    </div>
+    
+    <!-- WALLET MODAL -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#00d4ff; font-size:26px;">💼 My Wallet</h3>
+            <div style="background:linear-gradient(135deg,#0033cc,#0088ff);padding:30px 20px;border-radius:15px;margin-bottom:20px;text-align:center;box-shadow:0 5px 20px rgba(0,102,255,0.4);">
+                <p style="font-size:13px;color:#e6f0ff;">Available Balance</p>
+                <h1 style="color:white;font-family:'Rajdhani',sans-serif;font-size:45px;">৳ <span id="modal-wallet-bal">0</span></h1>
+            </div>
+            <div style="display:flex;gap:15px;margin-bottom:20px;">
+                <button class="btn-join" style="flex:1;padding:15px;font-size:14px;border-radius:10px;" onclick="showAddMoney()">➕ ADD MONEY</button>
+                <button class="btn-join" style="flex:1;padding:15px;font-size:14px;background:#ff4500;box-shadow:none;border-radius:10px;" onclick="showWithdraw()">💸 WITHDRAW</button>
+            </div>
+
+            <!-- Add Money Form -->
+            <div id="add-money-form" class="profile-form" style="display:none;background:#1a2235;padding:20px;border-radius:12px;">
+                <p style="font-size:12px;color:#ffaa00;margin-bottom:15px;font-weight:bold;">Send Money to (Personal):<br>bKash: <span id="w-bkash">Loading...</span><br>Nagad: <span id="w-nagad">Loading...</span></p>
+                <select id="add-method"><option value="bKash">bKash</option><option value="Nagad">Nagad</option></select>
+                <input type="number" id="add-amount" placeholder="Amount Sent (Min 20 Tk)">
+                <input type="text" id="add-last" placeholder="Last 4 digit / TrxID">
+                <button class="btn-join" id="addMoneyBtn" style="width:100%;padding:15px;margin-top:15px;font-size:14px;border-radius:10px;" onclick="submitAddMoney()">SUBMIT REQUEST</button>
+            </div>
+
+            <!-- Withdraw Form -->
+            <div id="withdraw-form" class="profile-form" style="display:none;background:#1a2235;padding:20px;border-radius:12px;">
+                <p style="font-size:12px;color:#aaa;margin-bottom:15px;">* Minimum Withdraw 20 Tk</p>
+                <select id="wd-method"><option value="bKash">bKash</option><option value="Nagad">Nagad</option></select>
+                <input type="number" id="wd-number" placeholder="Your Account Number">
+                <input type="number" id="wd-amount" placeholder="Amount (Minimum 20 Tk)">
+                <button class="btn-join" id="withdrawBtn" style="width:100%;padding:15px;background:#ff4500;margin-top:15px;box-shadow:none;font-size:14px;border-radius:10px;" onclick="submitWithdraw()">REQUEST WITHDRAW</button>
+            </div>
+            <button class="close-btn" onclick="closeWallet()">✖ CANCEL</button>
+        </div>
+    </div>
+
+    <!-- EDIT PROFILE MODAL (NO PASSWORD BOX) -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#00d4ff;">👤 Edit Profile</h3>
+            <div class="profile-pic-container">
+                <img id="prof-img-preview" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:100px;height:100px;border:3px solid #0066ff;">
+                <input type="file" id="prof-pic-upload" accept="image/*" style="display:none;" onchange="previewProfileImage(event)">
+                <label for="prof-pic-upload" style="display:block;color:#00aaff;font-size:13px;cursor:pointer;margin-top:10px;font-weight:bold;">📷 Change Picture</label>
+            </div>
+            <div class="profile-form">
+                <label>📧 Email Address</label>
+                <input type="text" id="prof-email" readonly style="color:#5a6b8c;">
+                
+                <label>🧑 Username</label>
+                <input type="text" id="prof-username" placeholder="Enter unique name">
+                
+                <label>📱 WhatsApp Number</label>
+                <input type="number" id="prof-whatsapp" placeholder="Ex: 017XXXXXXX">
+                
+                <label>🎮 Free Fire UID</label>
+                <input type="number" id="prof-uid" placeholder="Your In-Game UID">
+                
+                <label>🏆 Team Name</label>
+                <input type="text" id="prof-team" placeholder="Your Squad Name">
+                
+                <button class="btn-join" id="saveProfileBtn" style="width:100%;margin-top:20px;padding:15px;font-size:15px;border-radius:10px;">💾 SAVE PROFILE</button>
+                <button class="close-btn" onclick="closeEditProfile()">✖ CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MATCH CHAT MODAL -->
+    <div id="matchChatModal" class="modal">
+        <div class="modal-content" style="padding:20px; display:flex; flex-direction:column; height: 85vh; max-height:800px; background:#050814;">
+            <h3 id="chat-modal-title" style="margin-bottom:15px; font-size:18px; color:#fff; text-align:left; border-bottom:1px solid #1a2235; padding-bottom:15px;">💬 Match Chat</h3>
+            <div id="chat-messages"></div>
+            <div class="chat-input-area">
+                <input type="file" id="chat-img-upload" accept="image/*" style="display:none;">
+                <button class="img-btn" style="background:#1a2235;border:none;padding:12px 15px;border-radius:20px;color:#fff;" onclick="document.getElementById('chat-img-upload').click()"><i class="fa-solid fa-camera"></i></button>
+                <input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;padding:12px 15px;border-radius:20px;border:none;background:#1a2235;color:#fff;outline:none;font-size:13px;">
+                <button id="sendChatBtn" style="background:#00aaff;border:none;padding:12px 15px;border-radius:50%;color:#fff;cursor:pointer;"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+            <button class="close-btn" style="background:transparent;border:none;color:#8892b0;margin-top:15px;padding:10px;" onclick="closeMatchChat()">✖ Close Chat</button>
+        </div>
+    </div>
+
+    <!-- Image Viewer, Result & Rules -->
+    <div id="imgViewModal" class="modal">
+        <div class="modal-content" style="background:transparent; border:none; padding:0;">
+            <img id="full-chat-img" src="" style="width:100%; border-radius:15px;">
+            <button class="close-btn" onclick="document.getElementById('imgViewModal').style.display='none'">✖ CLOSE</button>
+        </div>
+    </div>
+    
+    <div id="resultModal" class="modal">
+        <div class="modal-content" style="padding:10px;background:transparent;border:none;">
+            <img id="result-img-display" src="" style="width:100%;border-radius:15px;border:4px solid #ffaa00;">
+            <button class="close-btn" onclick="closeResultModal()">✖ CLOSE</button>
+        </div>
+    </div>
+    
+    <div id="appRulesModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#00ff00;">📜 App Rules</h3>
+            <div id="app-rules-text" style="color:#ddd;font-size:14px;text-align:left;white-space:pre-wrap;margin-bottom:20px;line-height:1.6;">Loading...</div>
+            <button class="close-btn" onclick="closeAppRules()">✖ CLOSE</button>
+        </div>
+    </div>
+    
+    <div id="matchRulesModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#ffaa00;">⚖️ Match Rules</h3>
+            <h4 id="match-rules-title" style="color:#ffaa00;margin-bottom:15px;font-size:18px;">Slot</h4>
+            <div id="match-rules-text" style="color:#ddd;font-size:14px;text-align:left;white-space:pre-wrap;margin-bottom:20px;line-height:1.6;">Loading...</div>
+            <button class="close-btn" onclick="closeMatchRules()">✖ CLOSE</button>
+        </div>
+    </div>
+    <!-- ========================================== -->
+    <!-- 🔥 PART 2 (JAVASCRIPT LOGIC) STARTS HERE 🔥 -->
+    <!-- ========================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { 
+            getFirestore, collection, onSnapshot, doc, getDoc, setDoc, updateDoc, 
+            addDoc, query, where, getDocs, serverTimestamp, orderBy, limit 
+        } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { 
+            getAuth, signOut, onAuthStateChanged, updatePassword, 
+            EmailAuthProvider, reauthenticateWithCredential 
+        } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+        // ==========================================
+        // 🔥 FIREBASE CONFIGURATION 🔥
+        // ==========================================
+        const firebaseConfig = { 
+            apiKey: "AIzaSyDFs_g_3VDGrRs1SHVYrJ2nz-lu5XLMkwA", 
+            authDomain: "nexus-e-sports-24b88.firebaseapp.com", 
+            projectId: "nexus-e-sports-24b88", 
+            storageBucket: "nexus-e-sports-24b88.firebasestorage.app", 
+            messagingSenderId: "731484768866", 
+            appId: "1:731484768866:web:da8b6610217a2c89679f3b" 
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.auth = getAuth(app); 
+        const imgbbAPIKey = "7f82e2dd92ac75e36c6c80fc2dc10132";
+
+        // ==========================================
+        // 🔥 GLOBAL VARIABLES 🔥
+        // ==========================================
+        window.currentUserEmail = ""; 
+        window.currentUserUid = null; 
+        window.currentTeamName = "Guest User";
+        window.currentWalletBal = 0; 
+        
+        window.currentSlots = []; 
+        window.currentVipSlots = [];
+        window.slotRulesMap = {}; 
+        
+        window.currentChatSlot = ""; 
+        window.isChatEnabled = false;
+        window.myBookedSlots = []; 
+        window.isUserVip = false;
+
+        // Default Card Images
+        window.cardImageUrl = "https://images.hdqwalls.com/download/garena-free-fire-2021-4k-8j-1000x1000.jpg"; 
+        window.vipCardImageUrl = "https://images.hdqwalls.com/download/free-fire-game-k4-1000x1000.jpg";
+
+        // ==========================================
+        // 🔥 CHAT TOGGLE STATUS CHECK 🔥
+        // ==========================================
+        onSnapshot(doc(db, "Settings", "MatchFeatures"), (docSnap) => {
+            if(docSnap.exists()) { 
+                let d = docSnap.data(); 
+                window.isChatEnabled = (d.chatEnabled === true || d.chatEnabled === "Yes" || d.chatEnabled === "true"); 
+                if(window.currentUserEmail) {
+                    loadMyMatches(); 
+                }
+            } else {
+                window.isChatEnabled = true;
+            }
+        });
+
+        // ==========================================
+        // 🔥 AUTHENTICATION & VIP CHECK 🔥
+        // ==========================================
+        onAuthStateChanged(window.auth, async (user) => {
+            if (!user) {
+                // Not logged in -> redirect to login page
+                window.location.href = "index.html"; 
+            } else {
+                window.currentUserEmail = user.email; 
+                window.currentUserUid = user.uid; 
+                
+                document.getElementById('dash-email').innerText = user.email; 
+                document.getElementById('prof-email').value = user.email;
+                
+                const userDoc = await getDoc(doc(db, "Users", user.uid));
+                
+                if(userDoc.exists()) {
+                    let data = userDoc.data();
+                    
+                    // Admin Block Check
+                    if(data.status === "Blocked") { 
+                        await signOut(window.auth); 
+                        alert("আপনার অ্যাকাউন্ট এডমিন দ্বারা ব্লক করা হয়েছে!"); 
+                        window.location.href = "index.html"; 
+                        return; 
+                    }
+                    
+                    // Force Password Check for New Google Login Users
+                    if(!data.hasPassword) {
+                        document.getElementById('forcePasswordModal').style.display = 'flex';
+                    }
+                    
+                    // Wallet Update
+                    window.currentWalletBal = data.walletBalance || 0;
+                    document.getElementById('dash-wallet').innerText = window.currentWalletBal; 
+                    document.getElementById('modal-wallet-bal').innerText = window.currentWalletBal;
+                    
+                    // Profile Info Update
+                    if(data.username) { 
+                        document.getElementById('dash-name').innerText = data.username; 
+                        document.getElementById('prof-username').value = data.username; 
+                    }
+                    if(data.profile_pic) { 
+                        document.getElementById('dash-img').src = data.profile_pic; 
+                        document.getElementById('prof-img-preview').src = data.profile_pic; 
+                    }
+                    if(data.whatsapp) {
+                        document.getElementById('prof-whatsapp').value = data.whatsapp;
+                    }
+                    if(data.ff_uid) {
+                        document.getElementById('prof-uid').value = data.ff_uid;
+                    }
+                    if(data.team_name) { 
+                        document.getElementById('prof-team').value = data.team_name; 
+                        window.currentTeamName = data.team_name; 
+                    }
+
+                    // 🔥 VIP LOGIC ENABLED 🔥
+                    window.isUserVip = data.isVIP === true;
+                    
+                    if(window.isUserVip) {
+                        // Activate VIP UI Features
+                        let vipBadge = document.getElementById('vip-badge');
+                        let vipLockTag = document.getElementById('vip-lock-tag');
+                        let vipBtn = document.querySelector('.vip-btn');
+
+                        if(vipBadge) vipBadge.style.display = "inline-block";
+                        if(vipLockTag) vipLockTag.style.display = "none";
+                        
+                        if (vipBtn) {
+                            vipBtn.style.borderColor = "#00ff00";
+                            let icon = vipBtn.querySelector('i');
+                            let span = vipBtn.querySelector('span');
+                            if(icon) icon.style.color = "#00ff00";
+                            if(span) span.style.color = "#00ff00";
+                        }
+                        
+                        // Load VIP Slots only if user is VIP
+                        loadVipSlots(); 
+                    }
+                } else { 
+                    // New user without DB entry yet
+                    document.getElementById('forcePasswordModal').style.display = 'flex'; 
+                }
+                
+                // Load global data
+                loadMyMatches(); 
+                loadNotifications();
+            }
+        });
+
+        // ==========================================
+        // 🔥 LOGOUT FUNCTIONS 🔥
+        // ==========================================
+        document.getElementById('forceLogoutBtn').addEventListener('click', () => { 
+            signOut(window.auth).then(() => { window.location.href = "index.html"; }); 
+        });
+        
+        document.getElementById('logoutBtn').addEventListener('click', () => { 
+            if(confirm("Are you sure you want to logout?")) {
+                signOut(window.auth).then(() => { window.location.href = "index.html"; }); 
+            }
+        });
+
+        // ==========================================
+        // 🔥 FORCE PASSWORD & REF CODE SAVE 🔥
+        // ==========================================
+        document.getElementById('saveForcePassBtn').addEventListener('click', async () => {
+            let pwd = document.getElementById('force-new-password').value; 
+            let refCode = document.getElementById('force-ref-code').value.trim().toUpperCase(); 
+            let errorMsg = document.getElementById('force-error');
+            
+            // Password Validation (Min 8 chars, 1 Uppercase, 1 Number)
+            if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(pwd)) { 
+                errorMsg.innerText = "❌ অন্তত ৮ অক্ষর, ১টি বড় হাতের অক্ষর ও ১টি সংখ্যা থাকতে হবে!"; 
+                errorMsg.style.display = "block"; 
+                return; 
+            }
+            
+            let btn = document.getElementById('saveForcePassBtn'); 
+            btn.innerText = "⏳ SAVING..."; 
+            btn.disabled = true; 
+            errorMsg.style.display = "none";
+            
+            try { 
+                await updatePassword(window.auth.currentUser, pwd); 
+                await setDoc(doc(db, "Users", window.auth.currentUser.uid), { 
+                    hasPassword: true, 
+                    usedReferralCode: refCode 
+                }, { merge: true }); 
+                
+                alert("✅ পাসওয়ার্ড সফলভাবে সেভ হয়েছে!"); 
+                document.getElementById('forcePasswordModal').style.display = "none"; 
+            } catch(e) { 
+                if(e.code === 'auth/requires-recent-login') {
+                    errorMsg.innerText = "❌ এরর: দয়া করে LOGOUT করে আবার গুগল দিয়ে ঢুকে পাসওয়ার্ড দিন!"; 
+                } else {
+                    errorMsg.innerText = "❌ Error: " + e.message; 
+                }
+                errorMsg.style.display = "block"; 
+                btn.innerText = "💾 SAVE & CONTINUE"; 
+                btn.disabled = false; 
+            }
+        });
+
+        // ==========================================
+        // 🔥 PROFILE UPDATE (UNIQUE USERNAME) 🔥
+        // ==========================================
+        window.openEditProfile = function() { 
+            document.getElementById('editProfileModal').style.display = "flex"; 
+        }
+        
+        window.closeEditProfile = function() { 
+            document.getElementById('editProfileModal').style.display = "none"; 
+        }
+        
+        window.previewProfileImage = function(event) { 
+            const file = event.target.files[0]; 
+            if (file) {
+                document.getElementById('prof-img-preview').src = URL.createObjectURL(file); 
+            }
+        }
+
+        document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+            let btn = document.getElementById('saveProfileBtn'); 
+            
+            let username = document.getElementById('prof-username').value.trim(); 
+            let whatsapp = document.getElementById('prof-whatsapp').value.trim(); 
+            let ff_uid = document.getElementById('prof-uid').value; 
+            let team_name = document.getElementById('prof-team').value; 
+            let fileInput = document.getElementById('prof-pic-upload');
+            
+            // Validation: 11 Digit Phone Number
+            if(whatsapp && !/^01[3-9]\d{8}$/.test(whatsapp)) {
+                return alert("❌ সঠিক ১১ ডিজিটের বাংলাদেশী নাম্বার দিন!");
+            }
+            
+            btn.innerText = "⏳ SAVING..."; 
+            btn.disabled = true;
+            
+            try {
+                // Validation: Unique Username Check
+                if(username) { 
+                    const q = query(collection(db, "Users"), where("username", "==", username)); 
+                    const qSnap = await getDocs(q); 
+                    let isTaken = false; 
+                    
+                    qSnap.forEach(docSnap => { 
+                        if(docSnap.id !== window.auth.currentUser.uid) isTaken = true; 
+                    }); 
+                    
+                    if(isTaken) { 
+                        btn.innerText = "💾 SAVE PROFILE"; 
+                        btn.disabled = false; 
+                        return alert("❌ এই Username টি অলরেডি অন্য একজন ব্যবহার করছে! অন্য নাম দিন।"); 
+                    } 
+                }
+                
+                // Image Upload to ImgBB
+                let imageUrl = document.getElementById('prof-img-preview').src;
+                if (fileInput && fileInput.files.length > 0) { 
+                    const formData = new FormData(); 
+                    formData.append("image", fileInput.files[0]); 
+                    const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, { method: 'POST', body: formData }); 
+                    const imgData = await uploadRes.json(); 
+                    if (imgData.success) {
+                        imageUrl = imgData.data.url; 
+                    }
+                }
+                
+                // Save to Database
+                await setDoc(doc(db, "Users", window.auth.currentUser.uid), { 
+                    profile_pic: imageUrl, 
+                    username: username, 
+                    whatsapp: whatsapp, 
+                    ff_uid: ff_uid, 
+                    team_name: team_name 
+                }, { merge: true });
+                
+                document.getElementById('dash-img').src = imageUrl; 
+                document.getElementById('dash-name').innerText = username || "Guest User"; 
+                document.getElementById('prof-username').value = username;
+                
+                alert("✅ Profile Updated Successfully!"); 
+                closeEditProfile();
+                
+            } catch (error) { 
+                alert("❌ Update Failed! " + error.message); 
+            }
+            
+            btn.innerText = "💾 SAVE PROFILE"; 
+            btn.disabled = false;
+        });
+
+        // ==========================================
+        // 🔥 NAVIGATION CONTROL 🔥
+        // ==========================================
+        window.switchNav = function(sectionId, element) { 
+            document.querySelectorAll('.nav-section').forEach(sec => sec.classList.remove('active')); 
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active')); 
+            
+            document.getElementById(sectionId).classList.add('active'); 
+            element.classList.add('active'); 
+            window.scrollTo(0,0); 
+        }
+
+        window.openVipMatches = function() {
+            if(!window.isUserVip) {
+                return alert("🔒 এই ফিচারটি শুধুমাত্র VIP মেম্বারদের জন্য! এডমিনের সাথে যোগাযোগ করুন।");
+            }
+            document.getElementById('vip-section').style.display = "block";
+        }
+        
+        window.closeVipSection = function() { 
+            document.getElementById('vip-section').style.display = "none"; 
+        }
+
+        // ==========================================
+        // 🔥 MULTIPLE BANNERS SLIDER LOGIC 🔥
+        // ==========================================
+        window.bannerLinks = {};
+
+        onSnapshot(doc(db, "Settings", "AllBanners"), (docSnap) => { 
+            if(docSnap.exists()) { 
+                let d = docSnap.data(); 
+                window.bannerLinks = d;
+                
+                // Set Home Banners
+                if(d.hBan1) document.getElementById('h-slide-1').style.backgroundImage = `url('${d.hBan1}')`; 
+                if(d.hBan2) document.getElementById('h-slide-2').style.backgroundImage = `url('${d.hBan2}')`; 
+                if(d.hBan3) document.getElementById('h-slide-3').style.backgroundImage = `url('${d.hBan3}')`; 
+                
+                // Set VIP Banners
+                if(d.vBan1) document.getElementById('v-slide-1').style.backgroundImage = `url('${d.vBan1}')`; 
+                if(d.vBan2) document.getElementById('v-slide-2').style.backgroundImage = `url('${d.vBan2}')`; 
+                if(d.vBan3) document.getElementById('v-slide-3').style.backgroundImage = `url('${d.vBan3}')`; 
+            } 
+        });
+
+        // Load Card Images
+        onSnapshot(doc(db, "Settings", "AppImages"), (docSnap) => { 
+            if(docSnap.exists()) { 
+                let data = docSnap.data();
+                if(data.cardUrl) { 
+                    window.cardImageUrl = data.cardUrl; 
+                    if(window.currentSlots) renderSlots(window.currentSlots); 
+                } 
+            } 
+        });
+
+        // Load VIP Card Images
+        onSnapshot(doc(db, "Settings", "VipAppImages"), (docSnap) => { 
+            if(docSnap.exists()) { 
+                let data = docSnap.data();
+                if(data.vipCardUrl) { 
+                    window.vipCardImageUrl = data.vipCardUrl; 
+                    if(window.isUserVip) loadVipSlots(); 
+                } 
+            } 
+        });
+
+        window.clickBanner = function(type, num) {
+            let link = window.bannerLinks[`${type}Link${num}`];
+            if(link && link.trim() !== "") {
+                window.open(link, '_blank');
+            }
+        }
+
+        // Automatic Home Slider Logic
+        let hSlideIndex = 1;
+        setInterval(() => {
+            document.querySelectorAll('#home-slider .slide').forEach(s => s.classList.remove('active'));
+            let current = document.getElementById('h-slide-' + hSlideIndex);
+            if(current) current.classList.add('active');
+            
+            hSlideIndex++; 
+            if(hSlideIndex > 3) hSlideIndex = 1;
+        }, 3500);
+
+        // Automatic VIP Slider Logic
+        let vSlideIndex = 1;
+        setInterval(() => {
+            document.querySelectorAll('#vip-slider .slide').forEach(s => s.classList.remove('active'));
+            let current = document.getElementById('v-slide-' + vSlideIndex);
+            if(current) current.classList.add('active');
+            
+            vSlideIndex++; 
+            if(vSlideIndex > 3) vSlideIndex = 1;
+        }, 3500);
+
+        // ==========================================
+        // 🔥 NOTICES & NOTIFICATIONS 🔥
+        // ==========================================
+        onSnapshot(doc(db, "Settings", "AppNotice"), (docSnap) => { 
+            if(docSnap.exists() && docSnap.data().scrollText) { 
+                document.getElementById('news-ticker-box').style.display = "flex"; 
+                document.getElementById('news-text').innerText = docSnap.data().scrollText; 
+            } else { 
+                document.getElementById('news-ticker-box').style.display = "none"; 
+            } 
+        });
+
+        window.unreadDocs = [];
+        
+        function loadNotifications() {
+            const q = query(collection(db, "Notifications"), where("userId", "==", window.currentUserUid));
+            onSnapshot(q, (snapshot) => {
+                let notifList = document.getElementById('notif-list'); 
+                notifList.innerHTML = ''; 
+                let unreadCount = 0; 
+                window.unreadDocs = []; 
+                let allNotifs = [];
+                
+                snapshot.forEach(docSnap => {
+                    allNotifs.push({ id: docSnap.id, ...docSnap.data() });
+                }); 
+                
+                allNotifs.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+                
+                allNotifs.forEach(data => { 
+                    if(!data.isRead) { 
+                        unreadCount++; 
+                        window.unreadDocs.push(data.id); 
+                    } 
+                    notifList.innerHTML += `
+                        <div class="notif-card ${data.isRead ? '' : 'unread'}">
+                            <h4>${data.title}</h4>
+                            <p>${data.message}</p>
+                        </div>`; 
+                });
+                
+                if(allNotifs.length === 0) {
+                    notifList.innerHTML = "<p style='text-align:center; color:#5a6b8c; font-size:12px;'>No notifications yet.</p>";
+                }
+                
+                let badge = document.getElementById('bell-badge'); 
+                if(unreadCount > 0) { 
+                    badge.style.display = "flex"; 
+                    badge.innerText = unreadCount; 
+                } else { 
+                    badge.style.display = "none"; 
+                }
+            });
+        }
+        
+        window.openNotifModal = function() { 
+            document.getElementById('notifModal').style.display = "flex"; 
+            window.unreadDocs.forEach(id => { 
+                updateDoc(doc(db, "Notifications", id), { isRead: true }); 
+            }); 
+            document.getElementById('bell-badge').style.display = "none"; 
+        }
+        
+        window.closeNotifModal = function() { 
+            document.getElementById('notifModal').style.display = "none"; 
+        }
+
+        // ==========================================
+        // 🔥 TOP TEAMS LEADERBOARD 🔥
+        // ==========================================
+        window.openLeaderboard = function() {
+            document.getElementById('leaderboardModal').style.display = "flex";
+            
+            onSnapshot(collection(db, "Leaderboard"), (snapshot) => {
+                let list = document.getElementById('leaderboard-list'); 
+                list.innerHTML = ""; 
+                
+                if(snapshot.empty) {
+                    return list.innerHTML = "<p style='color:#aaa; text-align:center;'>এখনো কোনো বিজয়ী টিম নেই!</p>";
+                }
+                
+                let teams = []; 
+                snapshot.forEach(docSnap => teams.push(docSnap.data()));
+                
+                teams.sort((a, b) => { 
+                    let winsA = a.totalWins || 0; 
+                    let winsB = b.totalWins || 0; 
+                    let earnedA = a.totalEarned || 0; 
+                    let earnedB = b.totalEarned || 0; 
+                    
+                    if (winsB !== winsA) return winsB - winsA; 
+                    return earnedB - earnedA; 
+                });
+                
+                let rank = 1; 
+                teams.slice(0, 100).forEach(data => { 
+                    let medal = rank === 1 ? "🥇" : (rank === 2 ? "🥈" : (rank === 3 ? "🥉" : `<span style="font-size:12px; color:#8892b0;">#${rank}</span>`)); 
+                    let colorClass = rank === 1 ? "rank-1" : (rank === 2 ? "rank-2" : (rank === 3 ? "rank-3" : "")); 
+                    
+                    list.innerHTML += `
+                        <div class="rank-row ${colorClass}">
+                            <div class="rank-name">${medal} &nbsp; ${data.teamName}</div>
+                            <div class="rank-won">৳ ${data.totalEarned} <span style="font-size:10px; color:#aaa; display:block; text-align:right;">${data.totalWins} Wins</span></div>
+                        </div>`; 
+                    rank++; 
+                });
+            });
+        }
+        
+        window.closeLeaderboard = function() { 
+            document.getElementById('leaderboardModal').style.display = "none"; 
+        }
+
+        // ==========================================
+        // 🔥 WALLET & ADD MONEY/WITHDRAW 🔥
+        // ==========================================
+        onSnapshot(doc(db, "Settings", "PaymentInfo"), (docSnap) => { 
+            if(docSnap.exists()) { 
+                document.getElementById('w-bkash').innerText = docSnap.data().bkash; 
+                document.getElementById('w-nagad').innerText = docSnap.data().nagad; 
+            } 
+        });
+        
+        window.openWallet = function() { 
+            document.getElementById('walletModal').style.display = "flex"; 
+            document.getElementById('add-money-form').style.display = "none"; 
+            document.getElementById('withdraw-form').style.display = "none"; 
+        }
+        window.closeWallet = function() { document.getElementById('walletModal').style.display = "none"; }
+        window.showAddMoney = function() { document.getElementById('add-money-form').style.display = "block"; document.getElementById('withdraw-form').style.display = "none"; }
+        window.showWithdraw = function() { document.getElementById('withdraw-form').style.display = "block"; document.getElementById('add-money-form').style.display = "none"; }
+
+        window.submitAddMoney = async function() { 
+            let method = document.getElementById('add-method').value; 
+            let amount = parseInt(document.getElementById('add-amount').value); 
+            let lastDigit = document.getElementById('add-last').value; 
+            
+            if(!amount || !lastDigit) return alert("❌ সবগুলো ঘর পূরণ করুন!"); 
+            if(amount < 20) return alert("❌ সর্বনিম্ন 20 টাকা এড করতে হবে!"); 
+            
+            let btn = document.getElementById('addMoneyBtn'); 
+            btn.innerText = "⏳ Processing..."; 
+            btn.disabled = true; 
+            
+            try { 
+                // Double request check
+                const qSnap = await getDocs(query(collection(db, "AddMoneyRequests"), where("userId", "==", window.currentUserUid), where("status", "==", "Pending")));
+                if(!qSnap.empty) {
+                    btn.innerText = "SUBMIT REQUEST"; 
+                    btn.disabled = false; 
+                    return alert("❌ আপনার একটি Add Money রিকোয়েস্ট অলরেডি Pending আছে!");
+                }
+
+                await addDoc(collection(db, "AddMoneyRequests"), { 
+                    userId: window.auth.currentUser.uid, 
+                    email: window.auth.currentUser.email, 
+                    method: method, 
+                    amount: amount, 
+                    lastDigit: lastDigit, 
+                    status: "Pending", 
+                    timestamp: serverTimestamp() 
+                }); 
+                alert("✅ Request sent! এডমিন চেক করে আপনার ওয়ালেটে ব্যালেন্স এড করে দিবে।"); 
+                closeWallet(); 
+            } catch(e) { 
+                alert("❌ Error sending request!"); 
+            } 
+            
+            btn.innerText = "SUBMIT REQUEST"; 
+            btn.disabled = false; 
+        }
+
+        window.submitWithdraw = async function() { 
+            let method = document.getElementById('wd-method').value; 
+            let number = document.getElementById('wd-number').value; 
+            let amount = parseInt(document.getElementById('wd-amount').value); 
+            
+            if(!amount || !number) return alert("❌ সবগুলো ঘর পূরণ করুন!"); 
+            if(amount < 20) return alert("❌ সর্বনিম্ন 20 টাকা উইথড্র করতে পারবেন!"); 
+            if(amount > window.currentWalletBal) return alert("❌ আপনার ওয়ালেটে পর্যাপ্ত টাকা নেই!"); 
+            
+            let btn = document.getElementById('withdrawBtn'); 
+            btn.innerText = "⏳ Processing..."; 
+            btn.disabled = true; 
+            
+            try { 
+                // Double request check
+                const qSnap = await getDocs(query(collection(db, "WalletWithdraws"), where("userId", "==", window.currentUserUid), where("status", "==", "Pending")));
+                if(!qSnap.empty) {
+                    btn.innerText = "REQUEST WITHDRAW"; 
+                    btn.disabled = false; 
+                    return alert("❌ আপনার একটি Withdraw রিকোয়েস্ট অলরেডি Pending আছে!");
+                }
+
+                await updateDoc(doc(db, "Users", window.auth.currentUser.uid), { 
+                    walletBalance: window.currentWalletBal - amount 
+                }); 
+                
+                await addDoc(collection(db, "WalletWithdraws"), { 
+                    userId: window.auth.currentUser.uid, 
+                    email: window.auth.currentUser.email, 
+                    method: method, 
+                    number: number, 
+                    amount: amount, 
+                    status: "Pending", 
+                    timestamp: serverTimestamp() 
+                }); 
+                
+                alert("✅ Withdraw Request sent!"); 
+                closeWallet(); 
+            } catch(e) { 
+                alert("❌ Error sending request!"); 
+            } 
+            
+            btn.innerText = "REQUEST WITHDRAW"; 
+            btn.disabled = false; 
+        }
+
+        // ==========================================
+        // 🔥 RULES LOGIC 🔥
+        // ==========================================
+        onSnapshot(doc(db, "Settings", "AppRules"), (docSnap) => { 
+            if(docSnap.exists()) {
+                document.getElementById('app-rules-text').innerText = docSnap.data().text || "App rules are not set yet."; 
+            }
+        });
+        
+        window.openAppRules = function() { document.getElementById('appRulesModal').style.display = "flex"; }
+        window.closeAppRules = function() { document.getElementById('appRulesModal').style.display = "none"; }
+        
+        window.openMatchRules = function(slotTime) { 
+            document.getElementById('match-rules-title').innerText = slotTime + " Match Rules"; 
+            document.getElementById('match-rules-text').innerText = window.slotRulesMap[slotTime] || "এই ম্যাচের জন্য কোনো স্পেশাল রুলস দেওয়া হয়নি।"; 
+            document.getElementById('matchRulesModal').style.display = "flex"; 
+        }
+        window.closeMatchRules = function() { document.getElementById('matchRulesModal').style.display = "none"; }
+
+        // ==========================================
+        // 🔥 REGULAR SLOTS AUTO-RENDER 🔥
+        // ==========================================
+        const slotContainer = document.getElementById('slot-container');
+        
+        onSnapshot(collection(db, "Slots"), (snapshot) => {
+            let slotsArray = [];
+            
+            snapshot.forEach(docSnap => { 
+                slotsArray.push(docSnap.data()); 
+                window.slotRulesMap[docSnap.data().time] = docSnap.data().matchRules || "এই ম্যাচের জন্য কোনো স্পেশাল রুলস দেওয়া হয়নি।"; 
+            });
+            
+            // Auto Recovery Logic
+            if(slotsArray.length < 13) {
+                const eS = [{id:"slot_01",o:1,t:"2 PM"},{id:"slot_02",o:2,t:"3 PM"},{id:"slot_03",o:3,t:"4 PM"},{id:"slot_04",o:4,t:"5 PM"},{id:"slot_05",o:5,t:"6 PM"},{id:"slot_06",o:6,t:"7 PM"},{id:"slot_07",o:7,t:"8 PM"},{id:"slot_08",o:8,t:"9 PM"},{id:"slot_09",o:9,t:"10 PM"},{id:"slot_10",o:10,t:"11 PM"},{id:"slot_11",o:11,t:"12 AM"},{id:"slot_12",o:12,t:"1 AM"},{id:"slot_13",o:13,t:"2 AM"}];
+                let ex = slotsArray.map(s => s.id);
+                eS.forEach(s => { 
+                    if(!ex.includes(s.id)) {
+                        setDoc(doc(db, "Slots", s.id), { id: s.id, order: s.o, time: s.t, status: "Available", bookedSlot: 0, maxSlot: 12, fee: 50, total_price: 50, matchType: "Champion Rush", live: "Yes", drone: "Yes", roomId: "", roomPass: "", resultImage: "", matchRules: "" }, { merge: true }); 
+                    }
+                });
+            }
+            
+            slotsArray.sort((a, b) => a.order - b.order); 
+            window.currentSlots = slotsArray; 
+            renderSlots(slotsArray);
+            
+            if(window.currentUserEmail) loadMyMatches(); 
+        });
+
+        function renderSlots(slots) {
+            slotContainer.innerHTML = ''; 
+            slots.forEach(slot => {
+                let booked = slot.bookedSlot || 0; 
+                let isFull = slot.status === "Full" || booked >= slot.maxSlot;
+                let isAlreadyBooked = window.myBookedSlots.includes(slot.time); 
+                
+                let btnClass = ""; let btnText = "JOIN NOW"; let isDisabled = "";
+                
+                if(isAlreadyBooked) { 
+                    btnClass = "full"; btnText = "BOOKED"; isDisabled = "disabled"; 
+                } else if(isFull) { 
+                    btnClass = "full"; btnText = "SLOT FULL"; isDisabled = "disabled"; 
+                }
+                
+                let badgeClass = slot.live === "Yes" ? "live-badge" : "offline-badge"; 
+                let badgeText = slot.live === "Yes" ? "LIVE" : "OFF";
+                
+                let card = `
+                    <div class="t-card">
+                        <div class="t-img-box"><img src="${window.cardImageUrl}"><span class="${badgeClass}">${badgeText}</span></div>
+                        <div class="t-info">
+                            <div class="t-top-row">
+                                <div class="t-title"><h3 style="color:#00d4ff;">🕒 ${slot.time} Slot</h3><p>${slot.matchType} • Drone: ${slot.drone === "Yes" ? "✅" : "❌"}</p></div>
+                                <div class="t-slot"><p>SLOT</p><h4><span style="color:#fff;">${booked}</span>/${slot.maxSlot}</h4></div>
+                            </div>
+                            <div class="t-divider"></div>
+                            <div class="t-bottom-row">
+                                <div class="t-stats">
+                                    <div class="stat-item"><p>PRIZE POOL</p><h5>${slot.total_price || slot.fee}</h5></div>
+                                    <div class="stat-item"><p>ENTRY</p><h5>${slot.fee}</h5></div>
+                                </div>
+                                <button class="btn-join ${btnClass}" ${isDisabled} onclick="bookSlot('${slot.time}')">${btnText}</button>
+                            </div>
+                        </div>
+                    </div>`;
+                slotContainer.innerHTML += card;
+            });
+        }
+        
+        window.bookSlot = function(time) { window.location.href = `booking.html?time=${time}`; }
+
+        // ==========================================
+        // 🔥 VIP SLOTS RENDER 🔥
+        // ==========================================
+        function loadVipSlots() {
+            const vipSlotContainer = document.getElementById('vip-slot-container');
+            
+            onSnapshot(collection(db, "VipSlots"), (snapshot) => {
+                if (snapshot.empty) { 
+                    vipSlotContainer.innerHTML = '<p style="text-align:center; color:#8892b0;">No VIP Matches available right now.</p>'; 
+                    return; 
+                }
+                
+                let slotsArray = []; 
+                snapshot.forEach(docSnap => {
+                    slotsArray.push(docSnap.data());
+                    window.slotRulesMap[docSnap.data().time] = docSnap.data().matchRules || "এই ম্যাচের জন্য কোনো স্পেশাল রুলস দেওয়া হয়নি।";
+                });
+                
+                slotsArray.sort((a, b) => a.order - b.order); 
+                window.currentVipSlots = slotsArray;
+                vipSlotContainer.innerHTML = ''; 
+                
+                slotsArray.forEach(slot => {
+                    let booked = slot.bookedSlot || 0; 
+                    let isFull = slot.status === "Full" || booked >= slot.maxSlot;
+                    
+                    if(isFull) return; // VIPs do not see FULL slots
+
+                    let isAlreadyBooked = window.myBookedSlots.includes(slot.time); 
+                    let btnClass = isAlreadyBooked ? "full" : "btn-vip-join"; 
+                    let btnText = isAlreadyBooked ? "BOOKED" : "JOIN VIP MATCH"; 
+                    let isDisabled = isAlreadyBooked ? "disabled" : "";
+
+                    let card = `
+                    <div class="t-card vip-card">
+                        <div class="t-img-box"><img src="${window.vipCardImageUrl}"><span class="vip-badge-card">VIP</span></div>
+                        <div class="t-info">
+                            <div class="t-top-row">
+                                <div class="t-title"><h3 style="color:#ffcc00;">🕒 ${slot.time}</h3><p>${slot.matchType} • Drone: ${slot.drone === "Yes" ? "✅" : "❌"}</p></div>
+                                <div class="t-slot"><p>SLOT</p><h4 style="color:#ffcc00;">${booked}</h4></div>
+                            </div>
+                            <div class="t-divider"></div>
+                            <div class="t-bottom-row">
+                                <div class="t-stats">
+                                    <div class="stat-item"><p>PRIZE POOL</p><h5>${slot.total_price || slot.fee}</h5></div>
+                                    <div class="stat-item"><p>ENTRY</p><h5>${slot.fee}</h5></div>
+                                </div>
+                                <button class="btn-join ${btnClass}" ${isDisabled} onclick="bookSlot('${slot.time}')">${btnText}</button>
+                            </div>
+                        </div>
+                    </div>`;
+                    vipSlotContainer.innerHTML += card;
+                });
+            });
+        }
+
+        // ==========================================
+        // 🔥 MY MATCHES LOGIC 🔥
+        // ==========================================
+        function loadMyMatches() {
+            const myMatchesContainer = document.getElementById('my-matches-container');
+            
+            // Check both Regular and VIP bookings
+            onSnapshot(query(collection(db, "Bookings"), where("userEmail", "==", window.currentUserEmail)), (snapshot1) => {
+                onSnapshot(query(collection(db, "VipBookings"), where("userEmail", "==", window.currentUserEmail)), (snapshot2) => {
+                    
+                    myMatchesContainer.innerHTML = ''; 
+                    let hasApprovedMatches = false;
+                    window.myBookedSlots = []; 
+
+                    let processBooking = (docSnap, isVipSlot) => {
+                        let data = docSnap.data();
+                        
+                        // Push to booked slots array
+                        if(data.status === "Approved" || data.status === "Pending") {
+                            window.myBookedSlots.push(data.slotTime);
+                        }
+                        
+                        if(data.status === "Approved") {
+                            hasApprovedMatches = true;
+                            
+                            // Find Slot Info
+                            let slotInfo = window.currentSlots.find(s => s.time === data.slotTime);
+                            if(!slotInfo && window.currentVipSlots) {
+                                slotInfo = window.currentVipSlots.find(s => s.time === data.slotTime);
+                            }
+                            
+                            let roomBox = `<div class="room-box"><p>⏳ Room ID & Password will be available here 10-15 mins before the match starts.</p></div>`;
+                            
+                            if (slotInfo && slotInfo.roomId && slotInfo.roomId.trim() !== "") { 
+                                roomBox = `
+                                    <div class="room-box">
+                                        <p style="color:#00ff00; font-weight:bold; margin-bottom:5px;">✅ Match is Ready! Join Now</p>
+                                        <div class="room-credentials">
+                                            <div><span>Room ID</span><h4>${slotInfo.roomId}</h4></div>
+                                            <div style="border-left:1px dashed #333; padding-left:10px;"><span>Password</span><h4 style="color:#ffaa00;">${slotInfo.roomPass}</h4></div>
+                                        </div>
+                                    </div>`; 
+                            }
+                            
+                            let resultBtn = ""; 
+                            if (slotInfo && slotInfo.resultImage && slotInfo.resultImage.trim() !== "") { 
+                                resultBtn = `<button class="btn-result" onclick="showResultModal('${slotInfo.resultImage}')"><i class="fa-solid fa-trophy"></i> VIEW MATCH RESULTS</button>`; 
+                            }
+                            
+                            let matchRuleBtn = `<button class="btn-rule" style="flex:1;" onclick="openMatchRules('${data.slotTime}')"><i class="fa-solid fa-scale-balanced"></i> RULES</button>`;
+                            let chatBtn = window.isChatEnabled ? `<button class="btn-rule" style="flex:1; border-color:#ffaa00; color:#ffaa00;" onclick="openMatchChat('${data.slotTime}', '${data.teamName}')"><i class="fa-solid fa-comments"></i> CHAT</button>` : "";
+                            
+                            let titleColor = isVipSlot ? "#ffcc00" : "#ff4500";
+                            let titleIcon = isVipSlot ? "👑 VIP" : "🕒";
+
+                            let matchCard = `
+                                <div class="my-match-card">
+                                    <div class="my-match-header">
+                                        <h3 style="color:${titleColor};">${titleIcon} ${data.slotTime}</h3>
+                                        <span>APPROVED</span>
+                                    </div>
+                                    <p style="font-size:12px; color:#aaa; margin-bottom:10px;">Team: <strong style="color:white;">${data.teamName}</strong></p>
+                                    ${roomBox}
+                                    <div style="display:flex; gap:10px; margin-top:5px;">
+                                        ${matchRuleBtn}
+                                        ${chatBtn}
+                                    </div>
+                                    ${resultBtn}
+                                </div>`;
+                            myMatchesContainer.innerHTML += matchCard;
+                        }
+                    };
+
+                    snapshot1.forEach(d => processBooking(d, false));
+                    snapshot2.forEach(d => processBooking(d, true));
+
+                    if(!hasApprovedMatches) {
+                        myMatchesContainer.innerHTML = `
+                            <div class="coming-soon-box">
+                                <i class="fa-solid fa-gamepad" style="color:#555;"></i>
+                                <h2 style="color:#555; margin-bottom:10px;">No Matches Yet</h2>
+                                <p style="color:#777; font-size:13px;">আপনি এখনো কোনো স্লট বুক করেননি অথবা আপনার বুকিং Pending অবস্থায় আছে।</p>
+                            </div>`;
+                    }
+                    
+                    if(window.currentSlots) renderSlots(window.currentSlots); 
+                    if(window.isUserVip && window.currentVipSlots) loadVipSlots(); 
+                });
+            });
+        }
+
+        window.showResultModal = function(imgUrl) { 
+            document.getElementById('result-img-display').src = imgUrl; 
+            document.getElementById('resultModal').style.display = "flex"; 
+        }
+        window.closeResultModal = function() { 
+            document.getElementById('resultModal').style.display = "none"; 
+        }
+
+        // ==========================================
+        // 🔥 MATCH CHAT FUNCTIONALITY 🔥
+        // ==========================================
+        window.openMatchChat = function(slotTime, teamName) {
+            window.currentChatSlot = slotTime; 
+            window.chatTeamName = teamName || window.currentTeamName || "Guest User"; 
+            
+            document.getElementById('chat-modal-title').innerText = `💬 ${slotTime} Live Chat`; 
+            document.getElementById('matchChatModal').style.display = "flex";
+            
+            const q = query(collection(db, "MatchChats"), where("slotTime", "==", slotTime));
+            
+            window.chatUnsubscribe = onSnapshot(q, (snapshot) => {
+                let chatBox = document.getElementById('chat-messages'); 
+                chatBox.innerHTML = '';
+                
+                let msgs = []; 
+                snapshot.forEach(d => msgs.push({id: d.id, ...d.data()})); 
+                msgs.sort((a,b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0)); 
+                
+                msgs.forEach(m => {
+                    let isMe = m.userEmail === window.currentUserEmail; 
+                    let isAdmin = m.teamName === "👑 ADMIN";
+                    
+                    let alignClass = isMe ? "me" : (isAdmin ? "other admin" : "other");
+                    let senderClass = isAdmin ? "chat-sender admin-badge" : (isMe ? "chat-sender me-badge" : "chat-sender");
+                    
+                    let imgHtml = m.imageUrl ? `<br><img src="${m.imageUrl}" style="max-width:150px; border-radius:8px; margin-top:5px; cursor:pointer;" onclick="document.getElementById('full-chat-img').src='${m.imageUrl}'; document.getElementById('imgViewModal').style.display='flex';">` : "";
+                    let msgText = m.message !== "📷 Photo Attached" ? m.message : "";
+                    
+                    chatBox.innerHTML += `
+                        <div class="chat-msg-box ${alignClass}">
+                            <div class="${senderClass}">${m.teamName}</div>
+                            <div class="chat-bubble">${msgText}${imgHtml}</div>
+                        </div>`;
+                });
+                
+                chatBox.scrollTop = chatBox.scrollHeight; 
+            });
+        }
+        
+        window.closeMatchChat = function() { 
+            document.getElementById('matchChatModal').style.display = "none"; 
+            if(window.chatUnsubscribe) window.chatUnsubscribe(); 
+        }
+        
+        document.getElementById('sendChatBtn').addEventListener('click', async () => {
+            let msg = document.getElementById('chat-input').value.trim(); 
+            let fileInput = document.getElementById('chat-img-upload');
+            
+            if(!msg && fileInput.files.length === 0) return;
+            
+            let btn = document.getElementById('sendChatBtn'); 
+            btn.disabled = true;
+            
+            try {
+                let imageUrl = "";
+                if(fileInput.files.length > 0) {
+                    const formData = new FormData(); 
+                    formData.append("image", fileInput.files[0]);
+                    const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, { method: 'POST', body: formData });
+                    const imgData = await uploadRes.json(); 
+                    if(imgData.success) imageUrl = imgData.data.url;
+                }
+                
+                await addDoc(collection(db, "MatchChats"), { 
+                    slotTime: window.currentChatSlot, 
+                    teamName: window.chatTeamName, 
+                    userEmail: window.currentUserEmail, 
+                    message: msg || "📷 Photo Attached", 
+                    imageUrl: imageUrl, 
+                    timestamp: serverTimestamp() 
+                });
+                
+                document.getElementById('chat-input').value = ""; 
+                fileInput.value = "";
+            } catch(e) { 
+                alert("❌ Error sending message!"); 
+            }
+            btn.disabled = false;
+        });
+
+    </script>
+</body>
+</html>
